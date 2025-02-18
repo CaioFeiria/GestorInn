@@ -1,0 +1,5 @@
+<button class="btn btn-accent w-full py-2" [type]="type" [disabled]="isDisable">{{ label }}
+  <ng-content *ngIf="icon != ''">
+    icon
+  </ng-content>
+</button>

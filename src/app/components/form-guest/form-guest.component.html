@@ -27,6 +27,15 @@
           placeholder="Nome Completo"
         />
       </label>
+      <p *ngIf="formGuests.get('name')?.invalid && formGuests.get('name')?.touched"
+        class="text-red-600 text-xs pt-1 px-2">
+          <ng-container *ngIf="formGuests.get('name')?.hasError('required')">
+            Nome é obrigatório.
+          </ng-container>
+          <ng-container *ngIf="formGuests.get('name')?.hasError('minlength')">
+            Nome deve conter no mínimo 3 caracteres!
+          </ng-container>
+        </p>
     </div>
 
     <div class="mb-4">
@@ -53,6 +62,15 @@
           placeholder="example@example.com"
         />
       </label>
+      <p *ngIf="formGuests.get('email')?.invalid && formGuests.get('email')?.touched"
+        class="text-red-600 text-xs pt-1 px-2">
+          <ng-container *ngIf="formGuests.get('email')?.hasError('required')">
+            Email é obrigatório.
+          </ng-container>
+          <ng-container *ngIf="formGuests.get('email')?.hasError('email')">
+            Email inválido!
+          </ng-container>
+        </p>
     </div>
 
     <div class="mb-4">
@@ -83,6 +101,15 @@
           placeholder="Número Celular"
         />
       </label>
+      <p *ngIf="formGuests.get('phone')?.invalid && formGuests.get('phone')?.touched"
+        class="text-red-600 text-xs pt-1 px-2">
+          <ng-container *ngIf="formGuests.get('phone')?.hasError('required')">
+            Celular é obrigatório.
+          </ng-container>
+          <ng-container *ngIf="formGuests.get('phone')?.hasError('pattern')">
+            O número de celular está com o formato incorreto. Por favor, insira no formato: (XX) XXXXX-XXXX, com o DDD e os números corretamente preenchidos.
+          </ng-container>
+        </p>
     </div>
 
     <div class="mb-4">
@@ -108,9 +135,22 @@
           placeholder="CPF"
         />
       </label>
+      <p *ngIf="formGuests.get('document')?.invalid && formGuests.get('document')?.touched"
+      class="text-red-600 text-xs pt-1 px-2">
+        <ng-container *ngIf="formGuests.get('document')?.hasError('required')">
+          CPF é obrigatório.
+        </ng-container>
+        <ng-container *ngIf="formGuests.get('document')?.hasError('pattern')">
+          O formato do CPF está inválido. Por favor, insira no formato correto: XXX.XXX.XXX-XX.
+        </ng-container>
+      </p>
     </div>
 
     <div class="mt-4">
-      <button class="btn btn-accent w-full py-2" type="submit">Register</button>
+      <app-commom-button 
+        label="Cadastrar"
+        [isDisable]="formInvalid"
+        type="submit"
+      />
     </div>
   </form>
