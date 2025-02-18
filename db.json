@@ -1,28 +1,82 @@
 {
   "guests": [
     {
-      "id": "sd2",
-      "fullName": "Caio Henrique Feiria",
-      "email": "caio.feiria@gmail.com",
-      "telephone": "16997007668",
-      "cpf": "34335365446",
-      "passport": "ON512837"
+      "id": 1,
+      "name": "João Silva",
+      "email": "joao.silva@email.com",
+      "phone": "(11) 99999-1234",
+      "document": "123.456.789-00"
     },
     {
-      "id": "ad42",
-      "fullName": "Juleica da Silva",
-      "email": "juleica.lindinha@terra.com",
-      "telephone": "19997906482",
-      "cpf": "34325589440",
-      "passport": "RP712435"
+      "id": 2,
+      "name": "Maria Oliveira",
+      "email": "maria.oliveira@email.com",
+      "phone": "(21) 98888-5678",
+      "document": "987.654.321-00"
     },
     {
-      "id": "3ef0",
-      "fullName": "Lucas",
-      "email": "lucas@gmail.com",
-      "telephone": "169974848",
-      "cpf": "376448338",
-      "passport": "passport"
+      "id": "93a5",
+      "name": "Caio Feiria",
+      "email": "caio.feiria@simples.software",
+      "phone": "(16) 99700-0000",
+      "document": "543.345.546-35"
+    },
+    {
+      "id": "b3c6",
+      "name": "Joice Mendonca",
+      "email": "joice@hotmail.com",
+      "phone": "(19) 99434-3455",
+      "document": "234.354.213-75"
+    },
+    {
+      "id": "5257",
+      "name": "Joice Mendonca",
+      "email": "joice@hotmail.com",
+      "phone": "(19) 99434-3455",
+      "document": "234.354.213-75"
+    },
+    {
+      "id": "0da9",
+      "name": "Joice Mendonca",
+      "email": "joice@hotmail.com",
+      "phone": "(19) 99434-3455",
+      "document": "234.354.213-75"
+    },
+    {
+      "id": "df9d",
+      "name": "Joice Mendonca",
+      "email": "joice@hotmail.com",
+      "phone": "(19) 99434-3455",
+      "document": "234.354.213-75"
+    },
+    {
+      "id": "0f09",
+      "name": "Joice Mendonca",
+      "email": "joice@hotmail.com",
+      "phone": "(19) 99434-3455",
+      "document": "234.354.213-75"
+    }
+  ],
+  "reservations": [
+    {
+      "id": 1,
+      "guestId": 1,
+      "checkIn": "2025-03-01",
+      "checkOut": "2025-03-05",
+      "roomType": "Standard",
+      "numberOfGuests": 2,
+      "status": "confirmed",
+      "remarks": "Reserva feita online."
+    },
+    {
+      "id": 2,
+      "guestId": 2,
+      "checkIn": "2025-03-10",
+      "checkOut": "2025-03-15",
+      "roomType": "Deluxe",
+      "numberOfGuests": 1,
+      "status": "pending",
+      "remarks": "Aguardando confirmação de pagamento."
     }
   ]
 }

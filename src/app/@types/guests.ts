@@ -1,8 +1,7 @@
 export type TGuests = {
-  id: string;
-  fullName: string;
+  id: number;
+  name: string;
   email: string;
-  telephone: string;
-  cpf: string;
-  passport: string;
+  phone: string;
+  document: string;
 };

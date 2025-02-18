@@ -1,0 +1,14 @@
+<dialog id="mdl" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">{{ title }}</h3>
+    <p class="py-4" *ngIf="message != ''; else content">{{ message }}</p>
+    <ng-template #content>
+      <ng-container></ng-container>
+    </ng-template>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn" (click)="closeModal()">Fechar</button>
+      </form>
+    </div>
+  </div>
+</dialog>

@@ -1,0 +1,60 @@
+<div class="overflow-x-auto my-20 w-lvh">
+
+  <div class="flex place-content-between items-center bg-base-100 mb-2 rounded-lg">
+    <h3 class="font-bold text-2xl px-4">Hóspedes</h3>
+    <a routerLink="/registerGuests" class="btn btn-accent w-40 py-2">Novo Hóspede</a>
+  </div>
+
+  <table class="table table-lg bg-base-100">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    @for (guest of guests; track $index) {
+      <tr>
+        <td>
+          <div class="flex items-center gap-3">
+            <div class="avatar">
+              <div class="mask mask-squircle h-12 w-12">
+                <img
+                  src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+                  alt="Avatar Tailwind CSS Component" />
+              </div>
+            </div>
+            <div>
+              <div class="font-bold">{{ guest.name }}</div>
+              <div class="text-sm opacity-50">CPF: {{ guest.document }}</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          {{ guest.email }}
+          <br />
+          <span class="badge badge-ghost badge-sm">{{ guest.phone }}</span>
+        </td>
+        <th>
+          <button class="btn btn-ghost btn-xs" (click)="toggleModal(true)">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 23" fill="currentColor" class="h-5 w-5 opacity-70">
+              <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
+              <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
+            </svg>            
+          </button>
+        </th>
+      </tr>
+    }
+
+    </tbody>
+  </table>
+</div>
+
+<app-modal 
+  [toggleModalFn]="toggleModal"
+  title="Edição Hóspede"
+>
+  
+</app-modal>
