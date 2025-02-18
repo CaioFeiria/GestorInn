@@ -10,6 +10,7 @@ import { Component, Input, Output } from '@angular/core';
 export class ModalComponent {
   @Input() title: string = '';
   @Input() message: string = '';
+  @Input() withButton: boolean = true;
   @Input() toggleModalFn!: (isOpen: boolean) => void;
 
   closeModal(): void {

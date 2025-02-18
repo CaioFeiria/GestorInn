@@ -15,11 +15,15 @@ export class GuestsService {
     return this.http.get<Array<TGuests>>(this.apiUrl);
   }
 
+  getGuestById(id: number): Observable<TGuests> {
+    return this.http.get<TGuests>(`${this.apiUrl}/${id}`);
+  }
+
   insertGuest(guest?: TGuests): Observable<TGuests> {
     return this.http.post<TGuests>(this.apiUrl, { ...guest });
   }
 
-  updateGuest(id: string, guest: TGuests): Observable<TGuests> {
+  updateGuest(id: number, guest: TGuests): Observable<TGuests> {
     return this.http.put<TGuests>(`${this.apiUrl}/${id}`, { ...guest });
   }
 

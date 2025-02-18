@@ -11,8 +11,7 @@ export class CommomButtonComponent {
   @Input() isDisable: boolean = false;
   @Input() type: string = '';
   @Input() label!: string;
-  @Input() icon: string = '';
-  @Input() colorText: string = '';
-  @Input() colorBg: string = '';
+  @Input() icon: boolean = false;
+  @Input() styleBtn: string = '';
   // @Input() action!: () => void;
 }

@@ -25,6 +25,7 @@
           id="inpName"
           class="grow p-2 rounded"
           placeholder="Nome Completo"
+          autofocus
         />
       </label>
       <p *ngIf="formGuests.get('name')?.invalid && formGuests.get('name')?.touched"
@@ -147,10 +148,20 @@
     </div>
 
     <div class="mt-4">
-      <app-commom-button 
-        label="Cadastrar"
-        [isDisable]="formInvalid"
-        type="submit"
-      />
+      @if (add) {
+        <app-commom-button 
+          styleBtn="w-full"
+          label="Cadastrar"
+          [isDisable]="formInvalid"
+          type="submit"
+        />
+      } @else {
+        <app-commom-button 
+          styleBtn="w-full"
+          label="Atualizar"
+          [isDisable]="formInvalid"
+          type="submit"
+        />
+      }
     </div>
   </form>
