@@ -1,0 +1,28 @@
+{
+  "guests": [
+    {
+      "id": "sd2",
+      "fullName": "Caio Henrique Feiria",
+      "email": "caio.feiria@gmail.com",
+      "telephone": "16997007668",
+      "cpf": "34335365446",
+      "passport": "ON512837"
+    },
+    {
+      "id": "ad42",
+      "fullName": "Juleica da Silva",
+      "email": "juleica.lindinha@terra.com",
+      "telephone": "19997906482",
+      "cpf": "34325589440",
+      "passport": "RP712435"
+    },
+    {
+      "id": "3ef0",
+      "fullName": "Lucas",
+      "email": "lucas@gmail.com",
+      "telephone": "169974848",
+      "cpf": "376448338",
+      "passport": "passport"
+    }
+  ]
+}
