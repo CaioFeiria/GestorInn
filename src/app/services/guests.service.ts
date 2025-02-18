@@ -27,7 +27,7 @@ export class GuestsService {
     return this.http.put<TGuests>(`${this.apiUrl}/${id}`, { ...guest });
   }
 
-  deleteGuest(id: string): Observable<TGuests> {
+  deleteGuest(id: number): Observable<TGuests> {
     return this.http.delete<TGuests>(`${this.apiUrl}/${id}`);
   }
 }

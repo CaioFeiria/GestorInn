@@ -12,12 +12,10 @@ import { ModalComponent } from '../../components/modal/modal.component';
 import { FormGuestComponent } from '../../components/form-guest/form-guest.component';
 import { AlertComponent } from '../../components/alert/alert.component';
 import { CommomButtonComponent } from '../../components/commom-button/commom-button.component';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-guests',
   imports: [
-    RouterLink,
     ModalComponent,
     FormGuestComponent,
     AlertComponent,
@@ -27,9 +25,8 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './guests.component.scss',
 })
 export class GuestsComponent implements OnInit {
-  guestsIds: Array<number> = [];
   guests: Array<TGuests> = [];
-  guest!: TGuests;
+  guestInformations!: TGuests;
   viewOrNo: boolean = false;
 
   constructor(private guestsService: GuestsService) {}
@@ -52,7 +49,7 @@ export class GuestsComponent implements OnInit {
   loadGuestInformations(id: number): void {
     this.guestsService.getGuestById(id).subscribe({
       next: (guest) => {
-        this.guest = guest;
+        this.guestInformations = guest;
       },
       error: (err) => {
         console.error(err);
@@ -60,8 +57,31 @@ export class GuestsComponent implements OnInit {
     });
   }
 
-  toggleModal(isOpen: boolean): void {
-    const modal = document.getElementById('mdl') as HTMLDialogElement;
+  removeGuest(id: number): void {
+    this.guestsService.deleteGuest(id).subscribe({
+      next: (value) => {
+        console.log(value);
+        this.loadGuests();
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  toggleModalUpdate(isOpen: boolean): void {
+    const modal = document.getElementById('modalUpdate') as HTMLDialogElement;
+    if (modal) {
+      if (isOpen) {
+        modal.showModal();
+      } else {
+        modal.close();
+      }
+    }
+  }
+
+  toggleModalInsert(isOpen: boolean): void {
+    const modal = document.getElementById('modalInsert') as HTMLDialogElement;
     if (modal) {
       if (isOpen) {
         modal.showModal();
@@ -75,7 +95,7 @@ export class GuestsComponent implements OnInit {
     const intervalId = setInterval(() => {
       this.viewOrNo = value;
       this.loadGuests();
-      this.toggleModal(false);
+      this.toggleModalUpdate(false);
     }, 100);
     setTimeout(() => {
       clearInterval(intervalId);
