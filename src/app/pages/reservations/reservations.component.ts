@@ -66,8 +66,8 @@ export class ReservationsComponent implements OnInit {
 
   removeReservation(id: number): void {
     this.reservationService.deleteReservation(id).subscribe({
-      next: (reservation) => {
-        console.log('Reserva deletada:', reservation);
+      next: () => {
+        this.loadReservations();
       },
       error: (err) => console.error(err),
     });

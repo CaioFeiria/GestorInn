@@ -27,18 +27,25 @@
       "phone": "(11) 99543-8876",
       "document": "954.539.435-00",
       "id": "4100"
+    },
+    {
+      "id": "c8ed",
+      "name": "Eric Jeronimo",
+      "email": "ercj@icloud.com",
+      "phone": "(15) 95743-5860",
+      "document": "234.354.213-75"
     }
   ],
   "reservations": [
     {
-      "id": "1",
       "guestId": "f09f",
       "checkIn": "2025-03-01",
       "checkOut": "2025-03-05",
-      "roomType": "Standard",
+      "roomType": "Standart",
       "numberOfGuests": 2,
       "status": "Confirmado",
-      "remarks": "Reserva feita online."
+      "remarks": "Reserva feita online.",
+      "id": "1"
     },
     {
       "id": "2",
@@ -69,6 +76,26 @@
       "numberOfGuests": 3,
       "status": "Cancelado",
       "remarks": "Cartão não aprovou."
+    },
+    {
+      "guestId": "4100",
+      "checkIn": "2025-02-05",
+      "checkOut": "2025-02-06",
+      "roomType": "Standart",
+      "numberOfGuests": 10,
+      "status": "Cancelado",
+      "remarks": "Cartão não aprovou.",
+      "id": "19aa"
+    },
+    {
+      "id": "e189",
+      "guestId": "c8ed",
+      "checkIn": "2025-01-16",
+      "checkOut": "2025-02-03",
+      "roomType": "Standart",
+      "numberOfGuests": 8,
+      "status": "Confirmado",
+      "remarks": "Reserva feita online."
     }
   ]
 }

@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { CommomButtonComponent } from '../commom-button/commom-button.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import {
@@ -12,6 +20,7 @@ import { GuestsService } from '../../services/guests.service';
 import { TGuests } from '../../@types/guests';
 import { RoomType, roomTypeMapping } from '../../enums/roomType.enum';
 import { Status, statusMapping } from '../../enums/status.enum';
+import { TReservations } from '../../@types/reservations';
 
 @Component({
   selector: 'app-form-reservation',
@@ -19,11 +28,11 @@ import { Status, statusMapping } from '../../enums/status.enum';
   templateUrl: './form-reservation.component.html',
   styleUrl: './form-reservation.component.scss',
 })
-export class FormReservationComponent implements OnInit {
+export class FormReservationComponent implements OnInit, OnChanges {
   formReservation!: FormGroup;
   formInvalid: boolean = false;
   guests!: Array<TGuests>;
-  @Input() reservationId!: number;
+  @Input() reservationId: number = 0;
   @Input() add: boolean = false;
   @Output() openAlert = new EventEmitter<boolean>();
 
@@ -43,12 +52,16 @@ export class FormReservationComponent implements OnInit {
     this.getGuests();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.loadForm();
+  }
+
   createForm(): void {
     this.formReservation = new FormGroup({
       guestId: new FormControl('', [Validators.required]),
       checkIn: new FormControl('', [Validators.required]),
       checkOut: new FormControl('', [Validators.required]),
-      roomType: new FormControl('selected', [Validators.required]),
+      roomType: new FormControl('', [Validators.required]),
       numberOfGuests: new FormControl('', [Validators.required]),
       status: new FormControl('', [Validators.required]),
       remarks: new FormControl('', [Validators.required]),
@@ -95,6 +108,26 @@ export class FormReservationComponent implements OnInit {
           });
       }
     }
+  }
+
+  loadForm(): void {
+    this.reservationService.getReservationById(this.reservationId).subscribe({
+      next: (reservation) => {
+        this.formReservationSelected(reservation);
+      },
+    });
+  }
+
+  formReservationSelected(reservation: TReservations): void {
+    this.formReservation.get('guestId')?.setValue(reservation.guestId);
+    this.formReservation.get('checkIn')?.setValue(reservation.checkIn);
+    this.formReservation.get('checkOut')?.setValue(reservation.checkOut);
+    this.formReservation.get('roomType')?.setValue(reservation.roomType);
+    this.formReservation
+      .get('numberOfGuests')
+      ?.setValue(reservation.numberOfGuests);
+    this.formReservation.get('status')?.setValue(reservation.status);
+    this.formReservation.get('remarks')?.setValue(reservation.remarks);
   }
 
   formValidation(): void {

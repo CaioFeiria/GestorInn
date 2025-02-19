@@ -13,7 +13,7 @@
     <thead>
       <tr>
         <th>Status</th>
-        <th>Hóspede</th>
+        <th>Hóspede Responsável</th>
         <th>Tipo de Quarto</th>
         <th>CheckIn</th>
         <th>CheckOut</th>
@@ -114,13 +114,13 @@
     <app-commom-button
       label="Sim"
       styleBtn="btn-info"
+      (click)="removeReservation(reservationId); toggleModal('modalDeleteReservation', false)"
       />
-      <!-- (click)="removeGuest(guestId); toggleModal('modalDeleteGuest', false)" -->
 
     <app-commom-button
       label="Não"
       styleBtn="btn-accent"
-      (click)="toggleModal('modalDeleteGuest', false)"
+      (click)="toggleModal('modalDeleteReservation', false)"
     />
   </div>
 </app-modal>

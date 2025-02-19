@@ -16,8 +16,8 @@
           name="guestId"
           id="inpGuestId"
           class="form-control select-ghost w-full max-w-xs"
-          autofocus
         >
+        <option selected disabled value="">Hóspedes</option>
         @for (guest of guests; track $index) {
           <option [value]="guest.id">{{ guest.name }}</option>
         }
@@ -45,7 +45,6 @@
           name="checkIn"
           id="inpCheckIn"
           class="grow p-2 rounded"
-          autofocus
         />
       </label>
       <p *ngIf="formReservation.get('checkIn')?.invalid && formReservation.get('checkIn')?.touched"
@@ -91,6 +90,7 @@
           id="inpRoomType"
           class="form-control select-ghost w-full max-w-xs"
         >
+        <option selected disabled value="">Tipo de quarto</option>
           @for (room of roomTypesEnum; track $index) {
             <option [value]="room">{{ roomTypeMaping[room] }}</option>
           }
@@ -136,8 +136,8 @@
           name="status"
           id="inpStatus"
           class="form-control select-ghost w-full max-w-xs"
-          autofocus
         >
+        <option selected disabled value="">Status</option>
         @for (status of statusTypes; track $index) {
           <option [value]="status">{{ statusMaping[status] }}</option>
         }
