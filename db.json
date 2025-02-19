@@ -32,23 +32,43 @@
   "reservations": [
     {
       "id": "1",
-      "guestId": 1,
+      "guestId": "f09f",
       "checkIn": "2025-03-01",
       "checkOut": "2025-03-05",
       "roomType": "Standard",
       "numberOfGuests": 2,
-      "status": "confirmed",
+      "status": "Confirmado",
       "remarks": "Reserva feita online."
     },
     {
       "id": "2",
-      "guestId": 2,
+      "guestId": "4100",
       "checkIn": "2025-03-10",
       "checkOut": "2025-03-15",
       "roomType": "Deluxe",
       "numberOfGuests": 1,
-      "status": "pending",
+      "status": "Pendente",
       "remarks": "Aguardando confirmação de pagamento."
+    },
+    {
+      "id": "9206",
+      "guestId": "4130",
+      "checkIn": "2025-02-05",
+      "checkOut": "2025-02-11",
+      "roomType": "Suite",
+      "numberOfGuests": 6,
+      "status": "Confirmado",
+      "remarks": "Reserva feira online."
+    },
+    {
+      "id": "2840",
+      "guestId": "d6bf",
+      "checkIn": "2025-01-08",
+      "checkOut": "2025-02-19",
+      "roomType": "Deluxe",
+      "numberOfGuests": 3,
+      "status": "Cancelado",
+      "remarks": "Cartão não aprovou."
     }
   ]
 }
