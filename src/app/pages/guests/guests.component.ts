@@ -1,13 +1,6 @@
-import {
-  AfterContentInit,
-  AfterViewChecked,
-  AfterViewInit,
-  Component,
-  OnInit,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GuestsService } from '../../services/guests.service';
 import { TGuests } from '../../@types/guests';
-import { RouterLink } from '@angular/router';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { FormGuestComponent } from '../../components/form-guest/form-guest.component';
 import { AlertComponent } from '../../components/alert/alert.component';
@@ -26,68 +19,63 @@ import { CommomButtonComponent } from '../../components/commom-button/commom-but
 })
 export class GuestsComponent implements OnInit {
   guests: Array<TGuests> = [];
-  guestInformations!: TGuests;
+  guestId: number = 0;
   viewOrNo: boolean = false;
 
-  constructor(private guestsService: GuestsService) {}
+  constructor(private guestService: GuestsService) {}
 
   ngOnInit(): void {
+    this.loadFirstGuest();
     this.loadGuests();
   }
 
-  loadGuests(): void {
-    this.guestsService.getGuests().subscribe({
+  loadFirstGuest(): void {
+    this.guestService.getGuests().subscribe({
       next: (guests) => {
-        this.guests = guests;
         if (guests.length > 0) {
-          this.loadGuestInformations(guests[0].id);
+          this.guestId = guests[0].id;
         }
       },
+      error: (err) => console.error(err),
+    });
+  }
+
+  loadGuests(): void {
+    this.guestService.getGuests().subscribe({
+      next: (guests) => {
+        this.guests = guests;
+      },
+      error: (err) => console.error(err),
     });
   }
 
   loadGuestInformations(id: number): void {
-    this.guestsService.getGuestById(id).subscribe({
+    this.guestService.getGuestById(id).subscribe({
       next: (guest) => {
-        this.guestInformations = guest;
+        this.guestId = guest.id;
       },
-      error: (err) => {
-        console.error(err);
-      },
+      error: (err) => console.error(err),
     });
   }
 
   removeGuest(id: number): void {
-    this.guestsService.deleteGuest(id).subscribe({
-      next: (value) => {
-        console.log(value);
+    this.guestService.deleteGuest(id).subscribe({
+      next: () => {
         this.loadGuests();
       },
-      error: (err) => {
-        console.log(err);
-      },
+      error: (err) => console.error(err),
     });
   }
 
-  toggleModalUpdate(isOpen: boolean): void {
-    const modal = document.getElementById('modalUpdate') as HTMLDialogElement;
-    if (modal) {
-      if (isOpen) {
-        modal.showModal();
-      } else {
-        modal.close();
-      }
-    }
+  openModal(id: number, modalId: string) {
+    this.guestId = id;
+    this.toggleModal(modalId, true);
   }
 
-  toggleModalInsert(isOpen: boolean): void {
-    const modal = document.getElementById('modalInsert') as HTMLDialogElement;
+  toggleModal(modalId: string, isOpen: boolean): void {
+    const modal = document.getElementById(modalId) as HTMLDialogElement;
     if (modal) {
-      if (isOpen) {
-        modal.showModal();
-      } else {
-        modal.close();
-      }
+      isOpen ? modal.showModal() : modal.close();
     }
   }
 
@@ -95,7 +83,9 @@ export class GuestsComponent implements OnInit {
     const intervalId = setInterval(() => {
       this.viewOrNo = value;
       this.loadGuests();
-      this.toggleModalUpdate(false);
+      this.toggleModal('modalUpdate', false);
+      this.toggleModal('modalInsert', false);
+      this.toggleModal('modalDeleteGuest', false);
     }, 100);
     setTimeout(() => {
       clearInterval(intervalId);

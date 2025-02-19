@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-modal',
@@ -11,9 +11,9 @@ export class ModalComponent {
   @Input() title: string = '';
   @Input() idModal: string = '';
   @Input() message: string = '';
-  @Input() toggleModalFn!: (isOpen: boolean) => void;
+  @Input() toggleModalFn!: (modalId: string, isOpen: boolean) => void;
 
   closeModal(): void {
-    this.toggleModalFn(false);
+    this.toggleModalFn(this.idModal, false);
   }
 }

@@ -43,14 +43,6 @@ export class FormGuestComponent implements OnInit, OnChanges {
     this.loadForm();
   }
 
-  loadForm(): void {
-    this.guestService.getGuestById(this.guestId).subscribe({
-      next: (value) => {
-        this.formGuestSwithValuesStarted(value);
-      },
-    });
-  }
-
   createFormGuests(): void {
     this.formGuests = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -66,6 +58,14 @@ export class FormGuestComponent implements OnInit, OnChanges {
     });
   }
 
+  loadForm(): void {
+    this.guestService.getGuestById(this.guestId).subscribe({
+      next: (value) => {
+        this.formGuestSwithValuesStarted(value);
+      },
+    });
+  }
+
   formGuestSwithValuesStarted(guest: TGuests): void {
     this.formGuests.get('name')?.setValue(guest.name);
     this.formGuests.get('email')?.setValue(guest.email);
@@ -77,7 +77,7 @@ export class FormGuestComponent implements OnInit, OnChanges {
     if (!this.formInvalid) {
       if (this.add) {
         this.guestService.insertGuest(this.formGuests.value).subscribe({
-          next: () => {
+          next: (value) => {
             this.clearForm();
             this.openAlert.emit(true);
           },

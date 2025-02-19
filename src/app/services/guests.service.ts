@@ -19,7 +19,7 @@ export class GuestsService {
     return this.http.get<TGuests>(`${this.apiUrl}/${id}`);
   }
 
-  insertGuest(guest?: TGuests): Observable<TGuests> {
+  insertGuest(guest: TGuests): Observable<TGuests> {
     return this.http.post<TGuests>(this.apiUrl, { ...guest });
   }
 
