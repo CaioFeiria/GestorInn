@@ -73,6 +73,9 @@
           <ng-container *ngIf="formReservation.get('checkOut')?.hasError('required')">
             CheckOut é obrigatório.
           </ng-container>
+          <ng-container *ngIf="!this.dateCheckOutIsNotBeforeCheckIn()">
+            CheckOut não pode ser anterior ao CheckIn.
+          </ng-container>
         </p>
     </div>
 
@@ -122,6 +125,9 @@
       class="text-red-600 text-xs pt-1 px-2">
         <ng-container *ngIf="formReservation.get('numberOfGuests')?.hasError('required')">
           Total de hóspedes é obrigatório.
+        </ng-container>
+        <ng-container *ngIf="formReservation.get('numberOfGuests')?.hasError('min')">
+          Total de hóspedes não pode ser menor que um.
         </ng-container>
       </p>
     </div>

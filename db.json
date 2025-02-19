@@ -39,8 +39,8 @@
   "reservations": [
     {
       "guestId": "f09f",
-      "checkIn": "2025-03-01",
-      "checkOut": "2025-03-05",
+      "checkIn": "2025-02-19",
+      "checkOut": "2025-03-30",
       "roomType": "Standart",
       "numberOfGuests": 2,
       "status": "Confirmado",
@@ -96,6 +96,46 @@
       "numberOfGuests": 8,
       "status": "Confirmado",
       "remarks": "Reserva feita online."
+    },
+    {
+      "id": "f730",
+      "guestId": "d6bf",
+      "checkIn": "2025-02-08",
+      "checkOut": "2025-02-11",
+      "roomType": "Deluxe",
+      "numberOfGuests": 2,
+      "status": "Pendente",
+      "remarks": "haha"
+    },
+    {
+      "guestId": "4130",
+      "checkIn": "2025-02-10",
+      "checkOut": "2025-02-17",
+      "roomType": "Suite",
+      "numberOfGuests": 2,
+      "status": "Confirmado",
+      "remarks": "Pagamento OK",
+      "id": "28f7"
+    },
+    {
+      "id": "4b30",
+      "guestId": "4100",
+      "checkIn": "2025-02-19",
+      "checkOut": "2025-03-26",
+      "roomType": "Suite",
+      "numberOfGuests": 1,
+      "status": "Pendente",
+      "remarks": "Aguardando"
+    },
+    {
+      "guestId": "d6bf",
+      "checkIn": "2025-02-04",
+      "checkOut": "2025-02-11",
+      "roomType": "Deluxe",
+      "numberOfGuests": 1,
+      "status": "Pendente",
+      "remarks": "hhh",
+      "id": "b9bc"
     }
   ]
 }

@@ -24,13 +24,14 @@ import { TReservations } from '../../@types/reservations';
 
 @Component({
   selector: 'app-form-reservation',
-  imports: [CommonModule, CommomButtonComponent, ReactiveFormsModule, DatePipe],
+  imports: [CommonModule, CommomButtonComponent, ReactiveFormsModule],
   templateUrl: './form-reservation.component.html',
   styleUrl: './form-reservation.component.scss',
+  providers: [DatePipe],
 })
 export class FormReservationComponent implements OnInit, OnChanges {
   formReservation!: FormGroup;
-  formInvalid: boolean = false;
+  formInvalid: boolean = true;
   guests!: Array<TGuests>;
   @Input() reservationId: number = 0;
   @Input() add: boolean = false;
@@ -44,12 +45,14 @@ export class FormReservationComponent implements OnInit, OnChanges {
 
   constructor(
     private reservationService: ReservationsService,
-    private guestService: GuestsService
+    private guestService: GuestsService,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
     this.createForm();
     this.getGuests();
+    this.formValidation();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -59,13 +62,33 @@ export class FormReservationComponent implements OnInit, OnChanges {
   createForm(): void {
     this.formReservation = new FormGroup({
       guestId: new FormControl('', [Validators.required]),
-      checkIn: new FormControl('', [Validators.required]),
+      checkIn: new FormControl(
+        this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        [Validators.required]
+      ),
       checkOut: new FormControl('', [Validators.required]),
       roomType: new FormControl('', [Validators.required]),
-      numberOfGuests: new FormControl('', [Validators.required]),
+      numberOfGuests: new FormControl('', [
+        Validators.required,
+        Validators.min(1),
+      ]),
       status: new FormControl('', [Validators.required]),
       remarks: new FormControl('', [Validators.required]),
     });
+  }
+
+  dateCheckOutIsNotBeforeCheckIn(): boolean {
+    const checkIn = new Date(this.formReservation.get('checkIn')?.value);
+    const checkOut = new Date(this.formReservation.get('checkOut')?.value);
+
+    if (checkOut < checkIn) {
+      console.log('CheckIn é NÃO anterior ao CheckOut');
+      this.formInvalid = true;
+      return false;
+    }
+    console.log('CheckIn é anterior ao CheckOut');
+    this.formInvalid = false;
+    return true;
   }
 
   getGuests(): void {
@@ -81,31 +104,31 @@ export class FormReservationComponent implements OnInit, OnChanges {
 
   onSubmit(): void {
     if (!this.formInvalid) {
-      if (this.add) {
-        this.reservationService
-          .insertReservation(this.formReservation.value)
-          .subscribe({
-            next: (cadasgtro) => {
-              console.log('AQUI O CADASTRADO', cadasgtro);
-              this.clearForm();
-              this.openAlert.emit(true);
-            },
-            error: (err) => {
-              console.log(err);
-            },
-          });
-      } else {
-        this.reservationService
-          .updateReservation(this.reservationId, this.formReservation.value)
-          .subscribe({
-            next: (value) => {
-              console.log('EIS O PUT:', value);
-              this.openAlert.emit(true);
-            },
-            error: (err) => {
-              console.log(err);
-            },
-          });
+      if (this.dateCheckOutIsNotBeforeCheckIn()) {
+        if (this.add) {
+          this.reservationService
+            .insertReservation(this.formReservation.value)
+            .subscribe({
+              next: () => {
+                this.clearForm();
+                this.openAlert.emit(true);
+              },
+              error: (err) => {
+                console.log(err);
+              },
+            });
+        } else {
+          this.reservationService
+            .updateReservation(this.reservationId, this.formReservation.value)
+            .subscribe({
+              next: (value) => {
+                this.openAlert.emit(true);
+              },
+              error: (err) => {
+                console.log(err);
+              },
+            });
+        }
       }
     }
   }
