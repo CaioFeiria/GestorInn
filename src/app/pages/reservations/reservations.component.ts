@@ -7,6 +7,7 @@ import { ModalComponent } from '../../components/modal/modal.component';
 import { GuestsService } from '../../services/guests.service';
 import { TGuests } from '../../@types/guests';
 import { FormReservationComponent } from '../../components/form-reservation/form-reservation.component';
+import { RoomsService } from '../../services/rooms.service';
 
 @Component({
   selector: 'app-reservations',
@@ -29,18 +30,21 @@ export class ReservationsComponent implements OnInit {
 
   constructor(
     private reservationService: ReservationsService,
-    private guestService: GuestsService
+    private guestService: GuestsService,
+    private roomService: RoomsService
   ) {}
 
   ngOnInit(): void {
     this.loadReservations();
     this.getGuests();
+    this.roomService.getReservations();
   }
 
   loadReservations(): void {
     this.reservationService.getReservations().subscribe({
       next: (reservations) => {
         this.reservations = reservations;
+        this.roomService.getReservations();
       },
       error: (err) => console.error(err),
     });
@@ -68,6 +72,7 @@ export class ReservationsComponent implements OnInit {
     this.reservationService.deleteReservation(id).subscribe({
       next: () => {
         this.loadReservations();
+        this.roomService.getReservations();
       },
       error: (err) => console.error(err),
     });

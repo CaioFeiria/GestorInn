@@ -21,6 +21,7 @@ import { TGuests } from '../../@types/guests';
 import { RoomType, roomTypeMapping } from '../../enums/roomType.enum';
 import { Status, statusMapping } from '../../enums/status.enum';
 import { TReservations } from '../../@types/reservations';
+import { RoomsService } from '../../services/rooms.service';
 
 @Component({
   selector: 'app-form-reservation',
@@ -46,13 +47,15 @@ export class FormReservationComponent implements OnInit, OnChanges {
   constructor(
     private reservationService: ReservationsService,
     private guestService: GuestsService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private roomService: RoomsService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
     this.getGuests();
     this.formValidation();
+    this.roomService.searchForAvailableRooms();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
