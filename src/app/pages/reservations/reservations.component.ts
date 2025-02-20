@@ -9,6 +9,8 @@ import { TGuests } from '../../@types/guests';
 import { FormReservationComponent } from '../../components/form-reservation/form-reservation.component';
 import { RoomsService } from '../../services/rooms.service';
 import { RouterLink } from '@angular/router';
+import { SearchComponent } from '../../components/search/search.component';
+import { SearchService } from '../../services/search.service';
 
 @Component({
   selector: 'app-reservations',
@@ -19,33 +21,89 @@ import { RouterLink } from '@angular/router';
     ModalComponent,
     FormReservationComponent,
     RouterLink,
+    SearchComponent,
   ],
   templateUrl: './reservations.component.html',
   styleUrl: './reservations.component.scss',
 })
 export class ReservationsComponent implements OnInit {
   reservations: Array<TReservations> = [];
+  reservationsBackup: Array<TReservations> = [];
   reservationInfo!: TReservations;
   guests!: Array<TGuests>;
   reservationId: string = '';
   viewOrNo: boolean = false;
+  optionSearch: string = '';
 
   constructor(
     private reservationService: ReservationsService,
     private guestService: GuestsService,
-    private roomService: RoomsService
+    private roomService: RoomsService,
+    private searchService: SearchService
   ) {}
 
   ngOnInit(): void {
+    this.loadOptionSearch();
     this.loadReservations();
     this.getGuests();
     this.roomService.getReservations();
+    this.inputSearch();
+  }
+
+  loadOptionSearch(): void {
+    this.searchService.searchedOption$.subscribe({
+      next: (value) => {
+        this.optionSearch = value;
+      },
+    });
+  }
+
+  inputSearch(): void {
+    this.searchService.searched$.subscribe({
+      next: (value) => {
+        this.filter(value);
+      },
+    });
+  }
+
+  filter(search: string): void {
+    switch (this.optionSearch) {
+      case 'checkIn':
+        this.reservations = search.trim()
+          ? this.reservations.filter((res) =>
+              res.checkIn.toLowerCase().includes(search.toLowerCase())
+            )
+          : [...this.reservationsBackup];
+        break;
+      case 'checkOut':
+        this.reservations = search.trim()
+          ? this.reservations.filter((res) =>
+              res.checkOut.toLowerCase().includes(search.toLowerCase())
+            )
+          : [...this.reservationsBackup];
+        break;
+      case 'status':
+        this.reservations = search.trim()
+          ? this.reservations.filter((res) =>
+              res.status.toLowerCase().includes(search.toLowerCase())
+            )
+          : [...this.reservationsBackup];
+        break;
+      default:
+        this.reservations = search.trim()
+          ? this.reservations.filter((res) =>
+              res.roomType.toLowerCase().includes(search.toLowerCase())
+            )
+          : [...this.reservationsBackup];
+        break;
+    }
   }
 
   loadReservations(): void {
     this.reservationService.getReservations().subscribe({
       next: (reservations) => {
         this.reservations = reservations;
+        this.reservationsBackup = reservations;
       },
       error: (err) => console.error(err),
     });
