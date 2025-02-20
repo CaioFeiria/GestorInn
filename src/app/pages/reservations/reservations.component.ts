@@ -8,6 +8,7 @@ import { GuestsService } from '../../services/guests.service';
 import { TGuests } from '../../@types/guests';
 import { FormReservationComponent } from '../../components/form-reservation/form-reservation.component';
 import { RoomsService } from '../../services/rooms.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-reservations',
@@ -17,6 +18,7 @@ import { RoomsService } from '../../services/rooms.service';
     CommomButtonComponent,
     ModalComponent,
     FormReservationComponent,
+    RouterLink,
   ],
   templateUrl: './reservations.component.html',
   styleUrl: './reservations.component.scss',
@@ -44,7 +46,6 @@ export class ReservationsComponent implements OnInit {
     this.reservationService.getReservations().subscribe({
       next: (reservations) => {
         this.reservations = reservations;
-        this.roomService.getReservations();
       },
       error: (err) => console.error(err),
     });
@@ -72,7 +73,6 @@ export class ReservationsComponent implements OnInit {
     this.reservationService.deleteReservation(id).subscribe({
       next: () => {
         this.loadReservations();
-        this.roomService.getReservations();
       },
       error: (err) => console.error(err),
     });

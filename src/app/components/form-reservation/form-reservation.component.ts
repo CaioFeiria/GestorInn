@@ -34,6 +34,10 @@ export class FormReservationComponent implements OnInit, OnChanges {
   formReservation!: FormGroup;
   formInvalid: boolean = true;
   guests!: Array<TGuests>;
+  roomFull: boolean = false;
+  roomCapacityFull: boolean = false;
+  roomTypeValue: string = '';
+  roomCapacityValue: number = 0;
   @Input() reservationId: number = 0;
   @Input() add: boolean = false;
   @Output() openAlert = new EventEmitter<boolean>();
@@ -55,11 +59,11 @@ export class FormReservationComponent implements OnInit, OnChanges {
     this.createForm();
     this.getGuests();
     this.formValidation();
-    this.roomService.searchForAvailableRooms();
+    this.roomValidate();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.loadForm();
+    this.loadFormEdit();
   }
 
   createForm(): void {
@@ -85,12 +89,8 @@ export class FormReservationComponent implements OnInit, OnChanges {
     const checkOut = new Date(this.formReservation.get('checkOut')?.value);
 
     if (checkOut < checkIn) {
-      console.log('CheckIn é NÃO anterior ao CheckOut');
-      this.formInvalid = true;
       return false;
     }
-    console.log('CheckIn é anterior ao CheckOut');
-    this.formInvalid = false;
     return true;
   }
 
@@ -99,15 +99,50 @@ export class FormReservationComponent implements OnInit, OnChanges {
       next: (guests) => {
         this.guests = guests;
       },
-      error: (err) => {
-        console.log(err);
+      error: (err) => console.log(err),
+    });
+  }
+
+  checkRoomAvailability(): boolean {
+    if (this.roomService.isRoomAvailable(this.roomTypeValue)) {
+      if (this.formReservation.invalid) this.formInvalid = true;
+      return true;
+    }
+    this.formInvalid = true;
+    return false;
+  }
+
+  roomHasCapacity(): boolean {
+    return this.roomService.checkRoomCapacity(
+      this.roomTypeValue,
+      this.roomCapacityValue
+    );
+  }
+
+  roomValidate(): void {
+    this.formReservation.valueChanges.subscribe({
+      next: () => {
+        this.roomTypeValue = this.formReservation.get('roomType')?.value;
+        this.roomCapacityValue =
+          this.formReservation.get('numberOfGuests')?.value;
+        !this.checkRoomAvailability()
+          ? (this.roomFull = true)
+          : (this.roomFull = false);
+        this.roomHasCapacity()
+          ? (this.roomCapacityFull = true)
+          : (this.roomCapacityFull = false);
       },
+      error: (err) => console.log(err),
     });
   }
 
   onSubmit(): void {
     if (!this.formInvalid) {
-      if (this.dateCheckOutIsNotBeforeCheckIn()) {
+      if (
+        this.dateCheckOutIsNotBeforeCheckIn() &&
+        this.checkRoomAvailability() &&
+        !this.roomHasCapacity()
+      ) {
         if (this.add) {
           this.reservationService
             .insertReservation(this.formReservation.value)
@@ -116,31 +151,45 @@ export class FormReservationComponent implements OnInit, OnChanges {
                 this.clearForm();
                 this.openAlert.emit(true);
               },
-              error: (err) => {
-                console.log(err);
-              },
+              error: (err) => console.log(err),
             });
         } else {
           this.reservationService
             .updateReservation(this.reservationId, this.formReservation.value)
             .subscribe({
-              next: (value) => {
+              next: () => {
                 this.openAlert.emit(true);
               },
-              error: (err) => {
-                console.log(err);
-              },
+              error: (err) => console.log(err),
             });
         }
       }
     }
   }
 
-  loadForm(): void {
+  formValidation(): void {
+    this.formReservation.valueChanges.subscribe({
+      next: () => {
+        if (
+          this.formReservation.invalid &&
+          !this.checkRoomAvailability() &&
+          this.roomHasCapacity()
+        ) {
+          this.formInvalid = true;
+        } else {
+          this.formInvalid = false;
+        }
+      },
+      error: (err) => console.log(err),
+    });
+  }
+
+  loadFormEdit(): void {
     this.reservationService.getReservationById(this.reservationId).subscribe({
       next: (reservation) => {
         this.formReservationSelected(reservation);
       },
+      error: (err) => console.log(err),
     });
   }
 
@@ -154,21 +203,6 @@ export class FormReservationComponent implements OnInit, OnChanges {
       ?.setValue(reservation.numberOfGuests);
     this.formReservation.get('status')?.setValue(reservation.status);
     this.formReservation.get('remarks')?.setValue(reservation.remarks);
-  }
-
-  formValidation(): void {
-    this.formReservation.valueChanges.subscribe({
-      next: () => {
-        if (this.formReservation.invalid) {
-          this.formInvalid = true;
-        } else {
-          this.formInvalid = false;
-        }
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
   }
 
   clearForm(): void {

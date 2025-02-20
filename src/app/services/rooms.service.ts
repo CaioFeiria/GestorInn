@@ -1,73 +1,91 @@
 import { Injectable } from '@angular/core';
 import { ReservationsService } from './reservations.service';
 import { TReservations } from '../@types/reservations';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
+import { TRooms } from '../@types/rooms';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoomsService {
-  reservations!: Array<TReservations>;
+  private rooms: TRooms = {
+    Standard: {
+      type: 'Standard',
+      quantity: 10,
+      capacity: 2,
+      reserved: 0,
+    },
+    Deluxe: {
+      type: 'Deluxe',
+      quantity: 5,
+      capacity: 4,
+      reserved: 0,
+    },
+    Suite: {
+      type: 'Suite',
+      quantity: 3,
+      capacity: 6,
+      reserved: 0,
+    },
+  };
 
-  standardRoomQuantity: number = 10;
-  deluxeRoomQuantity: number = 5;
-  suiteRoomQuantity: number = 3;
-
-  standartCapacityRoom: number = 2;
-  deluxeCapacityRoom: number = 4;
-  suiteCapacityRoom: number = 6;
+  private roomsSubject = new BehaviorSubject<TRooms>(this.rooms);
+  rooms$ = this.roomsSubject.asObservable();
 
   constructor(private reservationService: ReservationsService) {}
 
-  getReservations(): void {
-    console.log('FUNÇÃO DE PESQUISAR QUARTOS DISPONIVEIS');
-    this.reservationService.getReservations().subscribe({
-      next: (reservations) => {
-        this.reservations = reservations;
-        const interval = setInterval(() => {
-          console.log('PESQUISANDOOOO');
-          this.searchForAvailableRooms();
-        }, 5000);
-        setTimeout(() => {
-          clearInterval(interval);
-        }, 5000);
-      },
-    });
+  // Retorna a quantidade disponível de um tipo específico de quarto
+  getAvailableRooms(roomType: string): number {
+    if (!this.rooms[roomType]) return 0;
+    return this.rooms[roomType].quantity - this.rooms[roomType].reserved;
   }
 
-  searchForAvailableRooms(): void {
-    console.log('FUNÇÃO SWITCHCASE QUARTOS DISPONIVEIS');
-    this.reservations.forEach((re) => {
-      console.log('TYPE ROOM', re.roomType);
-      switch (re.roomType) {
-        case 'Deluxe':
-          if (this.deluxeRoomQuantity > 0) {
-            this.deluxeRoomQuantity -= 1;
-            console.log(this.deluxeRoomQuantity);
-          } else {
-            console.log('Não a mais vagas nos Quartos DELUXE');
-          }
-          break;
-        case 'Standart':
-          if (this.standardRoomQuantity > 0) {
-            this.standardRoomQuantity -= 1;
-            console.log(this.standardRoomQuantity);
-          } else {
-            console.log('Não a mais vagas nos STANDART');
-          }
-          break;
-        case 'Suite':
-          if (this.suiteRoomQuantity > 0) {
-            this.suiteCapacityRoom -= 1;
-            console.log(this.suiteRoomQuantity);
-          } else {
-            console.log('Não a mais vagas nos Quartos SUITE');
-          }
-          break;
+  // Verifica se um quarto específico está disponível
+  isRoomAvailable(roomType: string): boolean {
+    return this.getAvailableRooms(roomType) > 0;
+  }
 
-        default:
-          console.log('nenhuma das opções válidas');
-          break;
+  checkRoomCapacity(roomType: string, capacity: number): boolean {
+    if (!this.rooms[roomType]) return false;
+    if (this.rooms[roomType].capacity + 1 <= capacity) {
+      return true;
+    }
+    return false;
+  }
+
+  // Busca todas as reservas e atualiza o estado dos quartos
+  async getReservations(): Promise<void> {
+    try {
+      const reservations = await firstValueFrom(
+        this.reservationService.getReservations()
+      );
+      await this.updateAvailableRooms(reservations);
+    } catch (err) {
+      console.error('Erro ao buscar reservas:', err);
+    }
+  }
+
+  // Atualiza a disponibilidade dos quartos baseado nas reservas
+  private async updateAvailableRooms(
+    reservations: TReservations[]
+  ): Promise<void> {
+    // Reseta as reservas antes de atualizar
+    this.resetReservations();
+
+    // Conta as reservas para cada tipo de quarto
+    reservations.forEach((reservation) => {
+      const { roomType } = reservation;
+
+      if (this.rooms[roomType]) {
+        this.rooms[roomType].reserved++;
       }
+    });
+
+    this.roomsSubject.next({ ...this.rooms });
+  }
+  private resetReservations(): void {
+    Object.keys(this.rooms).forEach((roomType) => {
+      this.rooms[roomType].reserved = 0;
     });
   }
 }

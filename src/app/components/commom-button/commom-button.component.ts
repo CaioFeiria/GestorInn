@@ -13,5 +13,4 @@ export class CommomButtonComponent {
   @Input() label!: string;
   @Input() icon: boolean = false;
   @Input() styleBtn: string = '';
-  // @Input() action!: () => void;
 }

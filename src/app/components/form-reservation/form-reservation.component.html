@@ -68,9 +68,9 @@
           class="grow p-2 rounded"
         />
       </label>
-      <p *ngIf="formReservation.get('checkOut')?.invalid && formReservation.get('checkOut')?.touched"
+      <p *ngIf="formReservation.get('checkOut')?.touched"
         class="text-red-600 text-xs pt-1 px-2">
-          <ng-container *ngIf="formReservation.get('checkOut')?.hasError('required')">
+          <ng-container *ngIf="formReservation.get('checkOut')?.invalid && formReservation.get('checkOut')?.hasError('required')">
             CheckOut é obrigatório.
           </ng-container>
           <ng-container *ngIf="!this.dateCheckOutIsNotBeforeCheckIn()">
@@ -99,10 +99,13 @@
           }
         </select>
       </label>
-      <p *ngIf="formReservation.get('roomType')?.invalid && formReservation.get('roomType')?.touched"
+      <p *ngIf="formReservation.get('roomType')?.touched"
         class="text-red-600 text-xs pt-1 px-2">
-          <ng-container *ngIf="formReservation.get('roomType')?.hasError('required')">
+          <ng-container *ngIf="formReservation.get('roomType')?.invalid && formReservation.get('roomType')?.hasError('required')">
             Tipo do quarto é obrigatório.
+          </ng-container>
+          <ng-container *ngIf="roomFull">
+            Não há mais quartos disponíveis deste tipo!
           </ng-container>
         </p>
     </div>
@@ -121,13 +124,16 @@
           placeholder="Total de hóspedes"
         />
       </label>
-      <p *ngIf="formReservation.get('numberOfGuests')?.invalid && formReservation.get('numberOfGuests')?.touched"
+      <p *ngIf="formReservation.get('numberOfGuests')?.touched"
       class="text-red-600 text-xs pt-1 px-2">
-        <ng-container *ngIf="formReservation.get('numberOfGuests')?.hasError('required')">
+        <ng-container *ngIf="formReservation.get('numberOfGuests')?.invalid && formReservation.get('numberOfGuests')?.hasError('required')">
           Total de hóspedes é obrigatório.
         </ng-container>
-        <ng-container *ngIf="formReservation.get('numberOfGuests')?.hasError('min')">
+        <ng-container *ngIf="formReservation.get('numberOfGuests')?.invalid && formReservation.get('numberOfGuests')?.hasError('min')">
           Total de hóspedes não pode ser menor que um.
+        </ng-container>
+        <ng-container *ngIf="roomCapacityFull">
+          Este quarto não suporta essa quantidade hóspedes!
         </ng-container>
       </p>
     </div>

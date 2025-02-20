@@ -1,5 +1,5 @@
 export enum RoomType {
-  Standard = 'Standart',
+  Standard = 'Standard',
   Deluxe = 'Deluxe',
   Suite = 'Suite',
 }
