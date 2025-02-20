@@ -19,7 +19,7 @@ import { CommomButtonComponent } from '../../components/commom-button/commom-but
 })
 export class GuestsComponent implements OnInit {
   guests: Array<TGuests> = [];
-  guestId: number = 0;
+  guestId: string = '';
   viewOrNo: boolean = false;
 
   constructor(private guestService: GuestsService) {}
@@ -49,7 +49,7 @@ export class GuestsComponent implements OnInit {
     });
   }
 
-  loadGuestInformations(id: number): void {
+  loadGuestInformations(id: string): void {
     this.guestService.getGuestById(id).subscribe({
       next: (guest) => {
         this.guestId = guest.id;
@@ -58,7 +58,7 @@ export class GuestsComponent implements OnInit {
     });
   }
 
-  removeGuest(id: number): void {
+  removeGuest(id: string): void {
     this.guestService.deleteGuest(id).subscribe({
       next: () => {
         this.loadGuests();
@@ -67,7 +67,7 @@ export class GuestsComponent implements OnInit {
     });
   }
 
-  openModal(id: number, modalId: string) {
+  openModal(id: string, modalId: string) {
     this.guestId = id;
     this.toggleModal(modalId, true);
   }

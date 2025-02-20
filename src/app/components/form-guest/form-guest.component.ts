@@ -28,7 +28,7 @@ import { TGuests } from '../../@types/guests';
 export class FormGuestComponent implements OnInit, OnChanges {
   formGuests!: FormGroup;
   formInvalid: boolean = true;
-  @Input() guestId!: number;
+  @Input() guestId!: string;
   @Input() add: boolean = false;
   @Output() openAlert = new EventEmitter<boolean>();
 

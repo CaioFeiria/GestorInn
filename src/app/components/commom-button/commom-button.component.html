@@ -1,4 +1,11 @@
-<button class="btn " [ngClass]="styleBtn != '' ? styleBtn : ''" [type]="type" [disabled]="isDisable">{{ label }}
-  <ng-content *ngIf="icon">
-  </ng-content>
+<button class="btn" [ngClass]="styleBtn" [type]="type" [disabled]="isDisable">
+  @if (iconLeft) {
+    <ng-content></ng-content>
+  }
+  
+  {{ label }}
+
+  @if (iconRight) {
+    <ng-content></ng-content>
+  }
 </button>

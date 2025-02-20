@@ -38,7 +38,7 @@ export class FormReservationComponent implements OnInit, OnChanges {
   roomCapacityFull: boolean = false;
   roomTypeValue: string = '';
   roomCapacityValue: number = 0;
-  @Input() reservationId: number = 0;
+  @Input() reservationId: string = '';
   @Input() add: boolean = false;
   @Output() openAlert = new EventEmitter<boolean>();
 

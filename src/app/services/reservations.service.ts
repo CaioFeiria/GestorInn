@@ -15,7 +15,7 @@ export class ReservationsService {
     return this.http.get<Array<TReservations>>(this.apiUrl);
   }
 
-  getReservationById(id: number): Observable<TReservations> {
+  getReservationById(id: string): Observable<TReservations> {
     return this.http.get<TReservations>(`${this.apiUrl}/${id}`);
   }
 
@@ -24,7 +24,7 @@ export class ReservationsService {
   }
 
   updateReservation(
-    id: number,
+    id: string,
     reservation: TReservations
   ): Observable<TReservations> {
     return this.http.put<TReservations>(`${this.apiUrl}/${id}`, {
@@ -32,7 +32,7 @@ export class ReservationsService {
     });
   }
 
-  deleteReservation(id: number): Observable<TReservations> {
+  deleteReservation(id: string): Observable<TReservations> {
     return this.http.delete<TReservations>(`${this.apiUrl}/${id}`);
   }
 }

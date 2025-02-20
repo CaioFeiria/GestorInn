@@ -15,7 +15,7 @@ export class GuestsService {
     return this.http.get<Array<TGuests>>(this.apiUrl);
   }
 
-  getGuestById(id: number): Observable<TGuests> {
+  getGuestById(id: string): Observable<TGuests> {
     return this.http.get<TGuests>(`${this.apiUrl}/${id}`);
   }
 
@@ -23,11 +23,11 @@ export class GuestsService {
     return this.http.post<TGuests>(this.apiUrl, { ...guest });
   }
 
-  updateGuest(id: number, guest: TGuests): Observable<TGuests> {
+  updateGuest(id: string, guest: TGuests): Observable<TGuests> {
     return this.http.put<TGuests>(`${this.apiUrl}/${id}`, { ...guest });
   }
 
-  deleteGuest(id: number): Observable<TGuests> {
+  deleteGuest(id: string): Observable<TGuests> {
     return this.http.delete<TGuests>(`${this.apiUrl}/${id}`);
   }
 }

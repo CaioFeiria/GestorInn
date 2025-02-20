@@ -1,6 +1,6 @@
 export type TReservations = {
-  id: number;
-  guestId: number;
+  id: string;
+  guestId: string;
   checkIn: string;
   checkOut: string;
   roomType: string;

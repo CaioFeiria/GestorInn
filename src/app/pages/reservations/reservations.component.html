@@ -39,7 +39,7 @@
         <td>{{ reservation.remarks }}</td>
         <td>
           <app-commom-button
-            [icon]="true"
+            [iconRight]="true"
             styleBtn="btn-ghost btn-xs"
             (click)="openModal(reservation.id, 'modalUpdate')"
           >
@@ -58,7 +58,7 @@
             </svg>
           </app-commom-button>
           <app-commom-button
-            [icon]="true"
+            [iconRight]="true"
             styleBtn="btn-ghost btn-xs"
             (click)="openModal(reservation.id, 'modalDeleteReservation')"
           >
@@ -78,7 +78,7 @@
             </svg>
           </app-commom-button>
           <app-commom-button
-            [icon]="true"
+            [iconRight]="true"
             styleBtn="btn-ghost btn-xs"
             [routerLink]="'/reservations/' + reservation.id"
           >

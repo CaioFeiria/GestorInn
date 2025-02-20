@@ -11,6 +11,7 @@ export class CommomButtonComponent {
   @Input() isDisable: boolean = false;
   @Input() type: string = '';
   @Input() label!: string;
-  @Input() icon: boolean = false;
+  @Input() iconLeft: boolean = false;
+  @Input() iconRight: boolean = false;
   @Input() styleBtn: string = '';
 }

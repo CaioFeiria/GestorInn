@@ -27,7 +27,7 @@ export class ReservationsComponent implements OnInit {
   reservations: Array<TReservations> = [];
   reservationInfo!: TReservations;
   guests!: Array<TGuests>;
-  reservationId: number = 0;
+  reservationId: string = '';
   viewOrNo: boolean = false;
 
   constructor(
@@ -51,7 +51,7 @@ export class ReservationsComponent implements OnInit {
     });
   }
 
-  getInformationsReservation(id: number): void {
+  getInformationsReservation(id: string): void {
     this.reservationService.getReservationById(id).subscribe({
       next: (reservation) => {
         this.reservationInfo = reservation;
@@ -69,7 +69,7 @@ export class ReservationsComponent implements OnInit {
     });
   }
 
-  removeReservation(id: number): void {
+  removeReservation(id: string): void {
     this.reservationService.deleteReservation(id).subscribe({
       next: () => {
         this.loadReservations();
@@ -78,7 +78,7 @@ export class ReservationsComponent implements OnInit {
     });
   }
 
-  openModal(id: number, modalId: string) {
+  openModal(id: string, modalId: string) {
     this.reservationId = id;
     this.toggleModal(modalId, true);
   }
