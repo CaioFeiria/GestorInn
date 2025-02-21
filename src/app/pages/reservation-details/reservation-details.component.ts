@@ -34,13 +34,12 @@ export class ReservationDetailsComponent implements OnInit {
       next: (reservation) => {
         this.reservation = reservation;
         this.loadGuest(reservation.guestId);
-        console.log(this.reservation);
       },
       error: (err) => console.error(err),
     });
   }
 
-  async loadGuest(id: string): Promise<void> {
+  loadGuest(id: string): void {
     this.guestService.getGuestById(id).subscribe({
       next: (guest) => {
         this.guest = guest;

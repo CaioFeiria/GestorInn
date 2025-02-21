@@ -36,29 +36,17 @@ export class GuestsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadFirstGuest();
     this.loadGuests();
     this.getReservations();
-  }
-
-  loadFirstGuest(): void {
-    this.guestService.getGuests().subscribe({
-      next: (guests) => {
-        if (guests.length > 0) {
-          this.guestId = guests[0].id;
-        }
-      },
-      error: (err) => console.error(err),
-    });
   }
 
   loadGuests(): void {
     this.guestService.getGuests().subscribe({
       next: (guests) => {
         this.guests = guests;
-        // if (guests.length > 0) {
-        //   this.loadGuestInformations(guests[0].id);
-        // }
+        if (guests.length > 0) {
+          this.guestId = guests[0].id;
+        }
       },
       error: (err) => console.error(err),
     });

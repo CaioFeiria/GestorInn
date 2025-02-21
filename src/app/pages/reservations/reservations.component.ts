@@ -47,7 +47,6 @@ export class ReservationsComponent implements OnInit {
   ngOnInit(): void {
     this.loadOptionSearch();
     this.loadReservations();
-    this.getGuests();
     this.roomService.getReservations();
     this.inputSearch();
   }
@@ -106,6 +105,7 @@ export class ReservationsComponent implements OnInit {
       next: (reservations) => {
         this.reservations = reservations;
         this.reservationsBackup = reservations;
+        this.getGuests();
       },
       error: (err) => console.error(err),
     });
@@ -195,15 +195,22 @@ export class ReservationsComponent implements OnInit {
 
   orderByRoom(): void {
     const roomsOrder: Record<string, number> = {
-      [RoomType.Suite]: 1,
+      [RoomType.Suite]: 3,
       [RoomType.Deluxe]: 2,
-      [RoomType.Standard]: 3,
+      [RoomType.Standard]: 1,
     };
 
     this.orderByCheckIn();
     this.reservations.sort(
       (a, b) => roomsOrder[a.roomType] - roomsOrder[b.roomType]
     );
+  }
+
+  handleClick(): void {
+    const elem = document.activeElement as HTMLElement;
+    if (elem) {
+      elem.blur();
+    }
   }
 
   viewAlert(value: boolean): void {

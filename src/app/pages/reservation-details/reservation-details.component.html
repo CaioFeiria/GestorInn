@@ -1,5 +1,6 @@
-<section class="bg-base-100 mt-10 rounded-md flex items-center justify-items-center">
+<section class="bg-base-100 mt-10 rounded-xl flex items-center justify-items-center">
   <app-commom-button
+  class="ml-3"
     styleBtn="btn-accent"
     label="Voltar"
     [iconRight]="true"
@@ -8,7 +9,7 @@
       <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-4.28 9.22a.75.75 0 0 0 0 1.06l3 3a.75.75 0 1 0 1.06-1.06l-1.72-1.72h5.69a.75.75 0 0 0 0-1.5h-5.69l1.72-1.72a.75.75 0 0 0-1.06-1.06l-3 3Z" clip-rule="evenodd" />
     </svg>
   </app-commom-button>
-  <h2 class="text-2xl font-bold p-2 flex items-center justify-self-center">Detalhes da Reserva</h2>
+  <h2 class="text-2xl font-bold p-5 flex items-center justify-self-center">Detalhes da Reserva</h2>
 </section>
 
 <section class="flex items-center gap-10 mt-10">
@@ -64,7 +65,7 @@
   <div class="card card-side bg-base-100 shadow-xl h-60 w-100 items-center">
     <div class="card-body gap-2">
       <div class="text-gray-600 text-md font-medium">
-        <h4 class="text-[22px] text-gray-900" [ngClass]="{'text-red-500': reservation.status == 'Cancelado', 'text-yellow-500': reservation.status == 'Pendente', 'text-green-600': reservation.status == 'Confirmado'}">
+        <h4 class="text-[22px]" [ngClass]="{'text-red-500': reservation.status == 'Cancelado', 'text-yellow-500': reservation.status == 'Pendente', 'text-green-600': reservation.status == 'Confirmado'}">
           {{ reservation.status}}
         </h4>
         <p class="flex gap-1 text-[18px]"><span class="flex items-center font-medium gap-1">

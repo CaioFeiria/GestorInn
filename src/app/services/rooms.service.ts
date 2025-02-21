@@ -58,7 +58,7 @@ export class RoomsService {
       );
       await this.updateAvailableRooms(reservations);
     } catch (err) {
-      console.error('Erro ao buscar reservas:', err);
+      console.error(err);
     }
   }
 

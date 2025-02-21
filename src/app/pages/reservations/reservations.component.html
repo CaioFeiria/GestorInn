@@ -2,14 +2,20 @@
 
   <div class="flex justify-between items-center bg-base-100 mt-24 mb-3 rounded-lg h-17">
     <div class="flex justify-center items-center">
-      <app-commom-button
-        styleBtn="btn-ghost ml-1"
-        [iconRight]="true"
-        (click)="orderByRoom()">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 opacity-70">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
-        </svg>
-      </app-commom-button>
+      <div class="dropdown dropdown-bottom dropdown-start">
+        <div tabindex="0" role="button" class="btn btn-ghost m-1">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 opacity-70">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+          </svg>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+          <li><a (click)="orderByRoom(); handleClick()">Tipo de quarto</a></li>
+          <li><a (click)="orderByStatus(); handleClick()">Status</a></li>
+          <li><a (click)="orderByCheckIn(); handleClick()">Data checkIn</a></li>
+          <li><a (click)="orderByCheckOut(); handleClick()">Data checkOut</a></li>
+        </ul>
+      </div>
+
       <h3 class="font-bold text-2xl pr-4 text-start">Reservas</h3>
     </div>
     <app-search></app-search>
@@ -19,7 +25,7 @@
   <table class="table bg-base-100 max-w-295">
     <thead [ngClass]="reservations.length == 0 ? 'hidden': ''">
       <tr>
-        <th>Status</th>
+        <th *ngIf="" >Status</th>
         <th>Hóspede Responsável</th>
         <th>Tipo de Quarto</th>
         <th>CheckIn</th>

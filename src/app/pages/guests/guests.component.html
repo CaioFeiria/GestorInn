@@ -92,11 +92,11 @@
     class="absolute top-0 left-1/1 w-full transform -translate-x-1/2 mt-4 p-2 rounded-lg m-0"
   />
 
-  <app-alert
+  <!-- <app-alert
     [hidden]="viewOrNo"
     message="O(a) Hóspede foi cadastrado com sucesso!"
     class="absolute top-0 left-1/2 w-full transform -translate-x-1/2 mt-4 p-2 rounded-lg m-0"
-  />
+  /> -->
 </div>
 
 <app-modal
@@ -123,8 +123,11 @@
   [toggleModalFn]="toggleModal"
   title="Alerta!"
 >
-  <p class="text-center text-gray-700 mb-6">Tem certeza que deseja excluir o hóspede?</p>
-  <span *ngIf="guestHasReservation" class="text-center text-red-400"><p class="mb-6">Esse Hóspede possui uma reserva ativa!</p></span>
+  @if (guestHasReservation) {
+    <p class="text-center text-lg text-red-400 mb-6">Esse Hóspede possui uma reserva ativa!<br/>Não é possível excluir do sistema.</p>
+  } @else {
+  <p class="text-center text-lg text-gray-700 mb-6">Tem certeza que deseja excluir o hóspede?</p>
+  }
   <div class="flex justify-center gap-4">
     <app-commom-button
       label="Sim"
@@ -133,10 +136,18 @@
       (actionClick)="removeGuest(guestId); toggleModal('modalDeleteGuest', false)"
     />
 
-    <app-commom-button
-      label="Não"
-      styleBtn="btn-accent"
-      (click)="toggleModal('modalDeleteGuest', false)"
-    />
+    @if (guestHasReservation) {
+      <app-commom-button
+        label="Voltar"
+        styleBtn="btn-accent"
+        (click)="toggleModal('modalDeleteGuest', false)"
+      />
+    } @else {
+      <app-commom-button
+        label="Não"
+        styleBtn="btn-accent"
+        (click)="toggleModal('modalDeleteGuest', false)"
+      />
+    }
   </div>
 </app-modal>
