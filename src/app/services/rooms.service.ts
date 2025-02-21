@@ -34,13 +34,11 @@ export class RoomsService {
 
   constructor(private reservationService: ReservationsService) {}
 
-  // Retorna a quantidade disponível de um tipo específico de quarto
   getAvailableRooms(roomType: string): number {
     if (!this.rooms[roomType]) return 0;
     return this.rooms[roomType].quantity - this.rooms[roomType].reserved;
   }
 
-  // Verifica se um quarto específico está disponível
   isRoomAvailable(roomType: string): boolean {
     return this.getAvailableRooms(roomType) > 0;
   }
@@ -53,7 +51,6 @@ export class RoomsService {
     return false;
   }
 
-  // Busca todas as reservas e atualiza o estado dos quartos
   async getReservations(): Promise<void> {
     try {
       const reservations = await firstValueFrom(
@@ -65,14 +62,11 @@ export class RoomsService {
     }
   }
 
-  // Atualiza a disponibilidade dos quartos baseado nas reservas
   private async updateAvailableRooms(
     reservations: TReservations[]
   ): Promise<void> {
-    // Reseta as reservas antes de atualizar
     this.resetReservations();
 
-    // Conta as reservas para cada tipo de quarto
     reservations.forEach((reservation) => {
       const { roomType } = reservation;
 

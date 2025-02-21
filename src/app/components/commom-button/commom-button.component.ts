@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-commom-button',
@@ -14,4 +14,10 @@ export class CommomButtonComponent {
   @Input() iconLeft: boolean = false;
   @Input() iconRight: boolean = false;
   @Input() styleBtn: string = '';
+  @Input() action!: () => void;
+  @Output() actionClick = new EventEmitter<void>();
+
+  actionClickFn(): void {
+    this.actionClick.emit();
+  }
 }

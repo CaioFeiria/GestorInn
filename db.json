@@ -22,23 +22,23 @@
       "id": "4130"
     },
     {
-      "name": "Ronaldo Henrique",
-      "email": "ronaldo.ricque@gmail.com",
-      "phone": "(11) 99543-8876",
-      "document": "954.539.435-00",
-      "id": "4100"
+      "id": "3800",
+      "name": "Eric Santos",
+      "email": "eric@gmail.com",
+      "phone": "(19) 99434-3455",
+      "document": "234.354.213-75"
     },
     {
-      "id": "c8ed",
-      "name": "Eric Jeronimo",
-      "email": "ercj@icloud.com",
-      "phone": "(15) 95743-5860",
-      "document": "234.354.213-75"
+      "name": "Eric Felisberto Derencio",
+      "email": "ericfd.contato@gmail.com",
+      "phone": "(16) 99742-6196",
+      "document": "123.456.789-17",
+      "id": "7644"
     }
   ],
   "reservations": [
     {
-      "guestId": "f09f",
+      "guestId": "4130",
       "checkIn": "2025-02-19",
       "checkOut": "2025-03-30",
       "roomType": "Deluxe",
@@ -46,26 +46,6 @@
       "status": "Confirmado",
       "remarks": "Reserva feita online.",
       "id": "1"
-    },
-    {
-      "id": "2",
-      "guestId": "4100",
-      "checkIn": "2025-03-10",
-      "checkOut": "2025-03-15",
-      "roomType": "Deluxe",
-      "numberOfGuests": 1,
-      "status": "Pendente",
-      "remarks": "Aguardando confirmação de pagamento."
-    },
-    {
-      "id": "9206",
-      "guestId": "4130",
-      "checkIn": "2025-02-05",
-      "checkOut": "2025-02-11",
-      "roomType": "Suite",
-      "numberOfGuests": 6,
-      "status": "Confirmado",
-      "remarks": "Reserva feira online."
     },
     {
       "guestId": "d6bf",
@@ -88,34 +68,14 @@
       "remarks": "Pagamento."
     },
     {
-      "guestId": "c8ed",
-      "checkIn": "2025-02-19",
-      "checkOut": "2025-02-26",
-      "roomType": "Deluxe",
-      "numberOfGuests": 4,
-      "status": "Confirmado",
-      "remarks": "ada",
-      "id": "ee1e"
-    },
-    {
-      "guestId": "4100",
-      "checkIn": "2025-02-20",
+      "guestId": "7644",
+      "checkIn": "2025-02-21",
       "checkOut": "2025-03-05",
-      "roomType": "Deluxe",
+      "roomType": "Suite",
       "numberOfGuests": 3,
-      "status": "Cancelado",
-      "remarks": "dadwad",
-      "id": "610b"
-    },
-    {
-      "id": "d574",
-      "guestId": "4100",
-      "checkIn": "2025-02-20",
-      "checkOut": "2025-02-26",
-      "roomType": "Deluxe",
-      "numberOfGuests": 4,
-      "status": "Pendente",
-      "remarks": "dadw"
+      "status": "Confirmado",
+      "remarks": "Cliente chat",
+      "id": "93f7"
     }
   ]
 }

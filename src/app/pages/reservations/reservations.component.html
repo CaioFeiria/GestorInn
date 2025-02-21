@@ -5,7 +5,7 @@
       <app-commom-button
         styleBtn="btn-ghost ml-1"
         [iconRight]="true"
-        (click)="orderByCheckOut()">
+        (click)="orderByRoom()">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 opacity-70">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
         </svg>
@@ -34,13 +34,13 @@
     @if (reservations.length != 0) {
       @for (reservation of reservations; track $index) {
       <tr>
-        <td class="flex justify-center items-center"><span class="badge badge-ghost badge-md" [ngClass]="{'text-red-500': reservation.status == 'Cancelado', 'text-yellow-500': reservation.status == 'Pendente', 'text-green-600': reservation.status == 'Confirmado'}" >{{ reservation.status }}</span></td>
+        <td class="flex justify-center items-center"><span class="badge badge-ghost badge-md text-md font-medium" [ngClass]="{'text-red-500': reservation.status == 'Cancelado', 'text-yellow-500': reservation.status == 'Pendente', 'text-green-600': reservation.status == 'Confirmado'}" >{{ reservation.status }}</span></td>
         <td>
           @for (guest of guests; track $index) {
-          <span *ngIf="reservation.guestId === guest.id">{{ guest.name }}</span>
+          <span class="text-md" *ngIf="reservation.guestId === guest.id">{{ guest.name }}</span>
           }
         </td>
-        <td class="flex justify-center items-center">{{ reservation.roomType }}</td>
+        <td class="flex justify-center items-center"><span class="badge badge-ghost badge-lg text-sm">{{ reservation.roomType }}</span></td>
         <td>{{ reservation.checkIn | date:'shortDate' }}</td>
         <td>{{ reservation.checkOut | date:'shortDate' }}</td>
         <td class="flex justify-center items-center"><span class="badge badge-ghost badge-lg">{{ reservation.numberOfGuests }}</span></td>

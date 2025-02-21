@@ -11,6 +11,8 @@ import { RoomsService } from '../../services/rooms.service';
 import { RouterLink } from '@angular/router';
 import { SearchComponent } from '../../components/search/search.component';
 import { SearchService } from '../../services/search.service';
+import { Status } from '../../enums/status.enum';
+import { RoomType } from '../../enums/roomType.enum';
 
 @Component({
   selector: 'app-reservations',
@@ -99,18 +101,6 @@ export class ReservationsComponent implements OnInit {
     }
   }
 
-  orderBy(arr: number[]): number[] {
-    let n = arr.length;
-    for (let i = 0; i < n - 1; i++) {
-      for (let j = 0; j < n - i - 1; j++) {
-        if (arr[j] > arr[j + 1]) {
-          [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
-        }
-      }
-    }
-    return arr;
-  }
-
   loadReservations(): void {
     this.reservationService.getReservations().subscribe({
       next: (reservations) => {
@@ -190,31 +180,30 @@ export class ReservationsComponent implements OnInit {
     }
   }
 
-  // orderByCheckOut(): void {
-  //   for (let i = 1; i < this.reservations.length; i++) {
-  //     const currentElement = new Date(this.reservations[i].checkOut);
-  //     let j = i - 1;
-  //     while (
-  //       j >= 0 &&
-  //       new Date(this.reservations[j].checkOut) > currentElement
-  //     ) {
-  //       this.reservations[j + 1].checkOut = this.reservations[j].checkOut;
-  //       j--;
-  //     }
-  //     this.reservations[j + 1].checkOut = currentElement.toString();
-  //   }
-  // }
-
   orderByStatus(): void {
-    for (let i = 0; i < this.reservations.length; i++) {
-      for (let j = i + 1; j < this.reservations.length; j++) {
-        if (this.reservations[i].status > this.reservations[j].status) {
-          let temp = this.reservations[i];
-          this.reservations[i] = this.reservations[j];
-          this.reservations[j] = temp;
-        }
-      }
-    }
+    const statusOrder: Record<string, number> = {
+      [Status.Confirmed]: 1,
+      [Status.Pending]: 2,
+      [Status.Cancelled]: 3,
+    };
+
+    this.orderByCheckIn();
+    this.reservations.sort(
+      (a, b) => statusOrder[a.status] - statusOrder[b.status]
+    );
+  }
+
+  orderByRoom(): void {
+    const roomsOrder: Record<string, number> = {
+      [RoomType.Suite]: 1,
+      [RoomType.Deluxe]: 2,
+      [RoomType.Standard]: 3,
+    };
+
+    this.orderByCheckIn();
+    this.reservations.sort(
+      (a, b) => roomsOrder[a.roomType] - roomsOrder[b.roomType]
+    );
   }
 
   viewAlert(value: boolean): void {

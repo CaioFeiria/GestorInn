@@ -1,4 +1,4 @@
-<button class="btn" [ngClass]="styleBtn" [type]="type" [disabled]="isDisable">
+<button class="btn" [ngClass]="styleBtn" [type]="type" [disabled]="isDisable" (click)="actionClickFn()">
   @if (iconLeft) {
     <ng-content></ng-content>
   }
