@@ -1,4 +1,4 @@
-import { TReservations } from '../@types/reservations';
+import { TReservations } from '../../@types/reservations';
 
 // Interface Strategy
 // Método sort recebe um array do tipo TReservations e o tipo de ordenação dele

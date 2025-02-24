@@ -63,13 +63,16 @@
           placeholder="example@example.com"
         />
       </label>
-      <p *ngIf="formGuests.get('email')?.invalid && formGuests.get('email')?.touched"
+      <p *ngIf="formGuests.get('email')?.touched"
         class="text-red-600 text-xs pt-1 px-2">
-          <ng-container *ngIf="formGuests.get('email')?.hasError('required')">
+          <ng-container *ngIf="formGuests.get('email')?.invalid && formGuests.get('email')?.hasError('required')">
             Email é obrigatório.
           </ng-container>
-          <ng-container *ngIf="formGuests.get('email')?.hasError('email')">
+          <ng-container *ngIf="formGuests.get('email')?.invalid && formGuests.get('email')?.hasError('email')">
             Email inválido!
+          </ng-container>
+          <ng-container *ngIf="formInvalid && emailInvalid">
+            Já possui um cadastro com esse Email.
           </ng-container>
         </p>
     </div>
@@ -138,13 +141,16 @@
           placeholder="CPF"
         />
       </label>
-      <p *ngIf="formGuests.get('document')?.invalid && formGuests.get('document')?.touched"
+      <p *ngIf="formGuests.get('document')?.touched"
       class="text-red-600 text-xs pt-1 px-2">
-        <ng-container *ngIf="formGuests.get('document')?.hasError('required')">
+        <ng-container *ngIf="formGuests.get('document')?.invalid && formGuests.get('document')?.hasError('required')">
           CPF é obrigatório.
         </ng-container>
-        <ng-container *ngIf="formGuests.get('document')?.hasError('pattern')">
+        <ng-container *ngIf="formGuests.get('document')?.invalid && formGuests.get('document')?.hasError('pattern')">
           O formato do CPF está inválido. Por favor, insira no formato correto: XXX.XXX.XXX-XX.
+        </ng-container>
+        <ng-container *ngIf="formInvalid && documentInvalid">
+          Já possui um cadastro com esse CPF.
         </ng-container>
       </p>
     </div>

@@ -22,6 +22,8 @@ import { RoomType, roomTypeMapping } from '../../enums/roomType.enum';
 import { Status, statusMapping } from '../../enums/status.enum';
 import { TReservations } from '../../@types/reservations';
 import { RoomsService } from '../../services/rooms.service';
+import { ValidationService } from '../../services/validation.service';
+import { FormValidationStrategy } from '../../strategies/validation-guest/formValidation-validation.strategy';
 
 @Component({
   selector: 'app-form-reservation',
@@ -63,7 +65,8 @@ export class FormReservationComponent implements OnInit, OnChanges {
     private reservationService: ReservationsService,
     private guestService: GuestsService,
     private datePipe: DatePipe,
-    private roomService: RoomsService
+    private roomService: RoomsService,
+    private valitionService: ValidationService
   ) {}
 
   ngOnInit(): void {
@@ -205,9 +208,16 @@ export class FormReservationComponent implements OnInit, OnChanges {
   formValidation(): void {
     this.formReservation.valueChanges.subscribe({
       next: () => {
+        // this.valitionService.setValidation(new FormValidationStrategy());
+        // this.valitionService.validate(
+        //   this.formReservation,
+        //   this.formInvalid,
+        //   !this.checkRoomAvailability(),
+        //   !this.roomHasCapacity()
+        // );
         if (
           this.formReservation.invalid &&
-          !this.checkRoomAvailability() &&
+          this.checkRoomAvailability() &&
           this.roomHasCapacity()
         ) {
           this.formInvalid = true;

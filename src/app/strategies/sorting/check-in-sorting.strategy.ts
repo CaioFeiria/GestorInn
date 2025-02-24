@@ -1,4 +1,4 @@
-import { TReservations } from '../@types/reservations';
+import { TReservations } from '../../@types/reservations';
 import { SortingStrategy } from './sorting.strategy';
 
 export class CheckInSorting implements SortingStrategy {

@@ -13,10 +13,10 @@ import { SearchComponent } from '../../components/search/search.component';
 import { SearchService } from '../../services/search.service';
 import { TOrderState } from '../../@types/orderState';
 import { SortingService } from '../../services/sorting.service';
-import { CheckInSorting } from '../../strategies/check-in-sorting.strategy';
-import { StatusSorting } from '../../strategies/status-sorting.strategy';
-import { RoomSorting } from '../../strategies/room-sorting.strategy';
-import { CheckOutSorting } from '../../strategies/check-out-sorting.strategy';
+import { CheckInSorting } from '../../strategies/sorting/check-in-sorting.strategy';
+import { StatusSorting } from '../../strategies/sorting/status-sorting.strategy';
+import { RoomSorting } from '../../strategies/sorting/room-sorting.strategy';
+import { CheckOutSorting } from '../../strategies/sorting/check-out-sorting.strategy';
 import { AlertComponent } from '../../components/alert/alert.component';
 
 @Component({
@@ -232,7 +232,6 @@ export class ReservationsComponent implements OnInit {
   // Método toggleOrder
   // Alterna o estado de ordenação (ascendente, descendente ou nenhum) a cada chamada que a função ordenar fazer
   toggleOrder(columnId: string): void {
-    console.log('aqui o order:', this.orderState);
     if (!this.orderState[columnId]) {
       this.orderState[columnId] = 'asc';
     } else if (this.orderState[columnId] === 'asc') {

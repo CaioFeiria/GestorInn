@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SortingStrategy } from '../strategies/sorting.strategy';
+import { SortingStrategy } from '../strategies/sorting/sorting.strategy';
 import { TReservations } from '../@types/reservations';
 import { TOrderState } from '../@types/orderState';
 

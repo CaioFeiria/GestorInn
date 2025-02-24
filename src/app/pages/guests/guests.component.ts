@@ -84,7 +84,6 @@ export class GuestsComponent implements OnInit {
     this.reservationService.getReservations().subscribe({
       next: (reserv) => {
         this.reservations = reserv;
-        console.log('EIS AQUI AS RESERVAS:', this.reservations);
       },
     });
   }
@@ -95,7 +94,6 @@ export class GuestsComponent implements OnInit {
     this.reservations.forEach((element) => {
       if (element.guestId == id) {
         this.guestIdHasReservation = element.guestId;
-        console.log('GUEST POSSUI SIM RESERVA', element.guestId);
       }
     });
     this.guestIdHasReservation == id
@@ -111,7 +109,6 @@ export class GuestsComponent implements OnInit {
       this.guestHasReservation = false;
       this.guestService.deleteGuest(id).subscribe({
         next: (value) => {
-          console.log('GUEST EXCLUIDO!', value);
           this.loadGuests();
         },
         error: (err) => console.error(err),

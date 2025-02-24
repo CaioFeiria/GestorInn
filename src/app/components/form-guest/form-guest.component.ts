@@ -43,6 +43,9 @@ import { InputMaskModule } from 'primeng/inputmask';
 export class FormGuestComponent implements OnInit, OnChanges {
   formGuests!: FormGroup;
   formInvalid: boolean = true;
+  guests: Array<TGuests> = [];
+  documentInvalid: boolean = false;
+  emailInvalid: boolean = false;
   @Input() guestId!: string;
   @Input() add: boolean = false;
   @Output() openAlert = new EventEmitter<boolean>();
@@ -52,6 +55,12 @@ export class FormGuestComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.createFormGuests();
     this.formValidation();
+    this.guestService.getGuests().subscribe({
+      next: (guestsBd) => {
+        this.guests = guestsBd;
+      },
+      error: (err) => console.error(err),
+    });
   }
 
   // Carrega os dados da reserva para edição quando o ID muda
@@ -90,10 +99,29 @@ export class FormGuestComponent implements OnInit, OnChanges {
     this.formGuests.patchValue(guest);
   }
 
+  // Faz a validação se o email e o CPF já estão cadastrado
+  validateCpfAndEmailSingle(): boolean {
+    let documentForm = this.formGuests.get('document')?.value;
+    let emailForm = this.formGuests.get('email')?.value;
+    this.guests.forEach((element) => {
+      if (element.id != this.guestId) {
+        if (element.document == documentForm) this.documentInvalid = true;
+        if (element.email == emailForm) this.emailInvalid = true;
+      }
+    });
+    if (this.documentInvalid || this.emailInvalid) {
+      this.formInvalid = true;
+      return false;
+    } else {
+      this.formInvalid = false;
+      return true;
+    }
+  }
+
   // Método onSubmit
   // Envia o formulário para criar ou atualizar um hóspede
   onSubmit(): void {
-    if (!this.formInvalid) {
+    if (!this.formInvalid && this.validateCpfAndEmailSingle()) {
       const operation = this.add
         ? this.guestService.insertGuest(this.formGuests.value)
         : this.guestService.updateGuest(this.guestId, this.formGuests.value);
@@ -118,6 +146,13 @@ export class FormGuestComponent implements OnInit, OnChanges {
           this.formInvalid = true;
         } else {
           this.formInvalid = false;
+        }
+        if (this.formInvalid) {
+          this.emailInvalid = true;
+          this.documentInvalid = true;
+        } else {
+          this.emailInvalid = false;
+          this.documentInvalid = false;
         }
       },
       error: (err) => {

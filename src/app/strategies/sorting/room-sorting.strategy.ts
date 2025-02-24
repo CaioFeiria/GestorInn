@@ -1,5 +1,5 @@
-import { TReservations } from '../@types/reservations';
-import { RoomType } from '../enums/roomType.enum';
+import { TReservations } from '../../@types/reservations';
+import { RoomType } from '../../enums/roomType.enum';
 import { SortingStrategy } from './sorting.strategy';
 
 export class RoomSorting implements SortingStrategy {

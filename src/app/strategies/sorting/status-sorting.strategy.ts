@@ -1,5 +1,5 @@
-import { TReservations } from '../@types/reservations';
-import { Status } from '../enums/status.enum';
+import { TReservations } from '../../@types/reservations';
+import { Status } from '../../enums/status.enum';
 import { SortingStrategy } from './sorting.strategy';
 
 export class StatusSorting implements SortingStrategy {
