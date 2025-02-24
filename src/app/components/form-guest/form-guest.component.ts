@@ -87,39 +87,25 @@ export class FormGuestComponent implements OnInit, OnChanges {
   // Método formGuestSwithValuesStarted
   // Preenche o formulário com os dados da reserva selecionada
   formGuestSwithValuesStarted(guest: TGuests): void {
-    this.formGuests.get('name')?.setValue(guest.name);
-    this.formGuests.get('email')?.setValue(guest.email);
-    this.formGuests.get('phone')?.setValue(guest.phone);
-    this.formGuests.get('document')?.setValue(guest.document);
+    this.formGuests.patchValue(guest);
   }
 
   // Método onSubmit
   // Envia o formulário para criar ou atualizar um hóspede
   onSubmit(): void {
     if (!this.formInvalid) {
-      if (this.add) {
-        this.guestService.insertGuest(this.formGuests.value).subscribe({
-          next: (value) => {
-            this.clearForm();
-            this.openAlert.emit(true);
-          },
-          error: (err) => {
-            console.log(err);
-          },
-        });
-      } else {
-        this.guestService
-          .updateGuest(this.guestId, this.formGuests.value)
-          .subscribe({
-            next: (value) => {
-              console.log(value);
-              this.openAlert.emit(true);
-            },
-            error: (err) => {
-              console.log(err);
-            },
-          });
-      }
+      const operation = this.add
+        ? this.guestService.insertGuest(this.formGuests.value)
+        : this.guestService.updateGuest(this.guestId, this.formGuests.value);
+      operation.subscribe({
+        next: () => {
+          this.clearForm();
+          this.openAlert.emit(true);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
     }
   }
 
@@ -143,9 +129,6 @@ export class FormGuestComponent implements OnInit, OnChanges {
   // Método clearForm
   // Limpa os campos do formulário após o envio
   clearForm(): void {
-    this.formGuests.get('name')?.reset();
-    this.formGuests.get('email')?.reset();
-    this.formGuests.get('phone')?.reset();
-    this.formGuests.get('document')?.reset();
+    this.formGuests.reset();
   }
 }

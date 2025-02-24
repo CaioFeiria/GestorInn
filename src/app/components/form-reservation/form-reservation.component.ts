@@ -181,26 +181,21 @@ export class FormReservationComponent implements OnInit, OnChanges {
         this.checkRoomAvailability() &&
         !this.roomHasCapacity()
       ) {
-        if (this.add) {
-          this.reservationService
-            .insertReservation(this.formReservation.value)
-            .subscribe({
-              next: () => {
-                this.clearForm();
-                this.openAlert.emit(true);
-              },
-              error: (err) => console.log(err),
-            });
-        } else {
-          this.reservationService
-            .updateReservation(this.reservationId, this.formReservation.value)
-            .subscribe({
-              next: () => {
-                this.openAlert.emit(true);
-              },
-              error: (err) => console.log(err),
-            });
-        }
+        const operation = this.add
+          ? this.reservationService.insertReservation(
+              this.formReservation.value
+            )
+          : this.reservationService.updateReservation(
+              this.reservationId,
+              this.formReservation.value
+            );
+        operation.subscribe({
+          next: () => {
+            this.clearForm();
+            this.openAlert.emit(true);
+          },
+          error: (err) => console.log(err),
+        });
       }
     }
   }
@@ -238,26 +233,12 @@ export class FormReservationComponent implements OnInit, OnChanges {
   // Método formReservationSelected
   // Preenche o formulário com os dados da reserva selecionada
   formReservationSelected(reservation: TReservations): void {
-    this.formReservation.get('guestId')?.setValue(reservation.guestId);
-    this.formReservation.get('checkIn')?.setValue(reservation.checkIn);
-    this.formReservation.get('checkOut')?.setValue(reservation.checkOut);
-    this.formReservation.get('roomType')?.setValue(reservation.roomType);
-    this.formReservation
-      .get('numberOfGuests')
-      ?.setValue(reservation.numberOfGuests);
-    this.formReservation.get('status')?.setValue(reservation.status);
-    this.formReservation.get('remarks')?.setValue(reservation.remarks);
+    this.formReservation.patchValue(reservation);
   }
 
   // Método clearForm
   // Limpa os campos do formulário após o envio
   clearForm(): void {
-    this.formReservation.get('guestId')?.reset();
-    this.formReservation.get('checkIn')?.reset();
-    this.formReservation.get('checkOut')?.reset();
-    this.formReservation.get('roomType')?.reset();
-    this.formReservation.get('numberOfGuests')?.reset();
-    this.formReservation.get('status')?.reset();
-    this.formReservation.get('remarks')?.reset();
+    this.formReservation.reset();
   }
 }

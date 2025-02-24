@@ -8,7 +8,7 @@
       "id": "d6bf"
     },
     {
-      "name": "Caio Feiria",
+      "name": "Caio Henrique Feiria",
       "email": "caio.feiria@simples.software",
       "phone": "(11) 99999-1234",
       "document": "543.345.546-35",
@@ -16,7 +16,7 @@
     },
     {
       "name": "Joice Mendonca",
-      "email": "jo.mendonca@gmail.com",
+      "email": "jo.mendonca22@gmail.com",
       "phone": "(18) 63543-8876",
       "document": "322.425.245-48",
       "id": "4130"
@@ -37,10 +37,17 @@
     },
     {
       "name": "Carol Vasconcelos",
-      "email": "ca@email.com",
+      "email": "carolzinha@email.com",
       "phone": "(16) 99993-4343",
       "document": "843.728.437-42",
       "id": "1659"
+    },
+    {
+      "name": "Rasputia da Silva",
+      "email": "ras.silva32@email.com",
+      "phone": "(17) 99999-0034",
+      "document": "393.394.829-34",
+      "id": "9496"
     }
   ],
   "reservations": [
@@ -75,14 +82,34 @@
       "remarks": "Pagamento."
     },
     {
-      "guestId": "7644",
+      "guestId": "1659",
       "checkIn": "2025-02-21",
       "checkOut": "2025-03-05",
-      "roomType": "Suite",
-      "numberOfGuests": 3,
-      "status": "Confirmado",
-      "remarks": "Cliente chat",
+      "roomType": "Deluxe",
+      "numberOfGuests": 4,
+      "status": "Cancelado",
+      "remarks": "Aguardando o pagamento via cartao",
       "id": "93f7"
+    },
+    {
+      "guestId": "9496",
+      "checkIn": "2025-02-24",
+      "checkOut": "2025-03-05",
+      "roomType": "Standard",
+      "numberOfGuests": 1,
+      "status": "Confirmado",
+      "remarks": "Pagamento aprovado",
+      "id": "5b50"
+    },
+    {
+      "id": "0beb",
+      "guestId": "3800",
+      "checkIn": "2025-02-12",
+      "checkOut": "2025-02-13",
+      "roomType": "Standard",
+      "numberOfGuests": 1,
+      "status": "Confirmado",
+      "remarks": "Pagamento aprovado"
     }
   ]
 }
