@@ -7,6 +7,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   templateUrl: './commom-button.component.html',
   styleUrl: './commom-button.component.scss',
 })
+
+// Componente Commom Button
+// Utilizado como um botão normal, mas mantendo um padrão de estilo para a aplicação
 export class CommomButtonComponent {
   @Input() isDisable: boolean = false;
   @Input() type: string = '';

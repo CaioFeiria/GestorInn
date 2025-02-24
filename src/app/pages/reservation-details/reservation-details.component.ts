@@ -13,6 +13,9 @@ import { CommomButtonComponent } from '../../components/commom-button/commom-but
   templateUrl: './reservation-details.component.html',
   styleUrl: './reservation-details.component.scss',
 })
+// Componente ReservationDetailsComponent
+// Exibe os detalhes de uma reserva específica, incluindo informações do hóspede associado
+// Responsável por carregar os dados da reserva e do hóspede correspondente com base no ID da reserva
 export class ReservationDetailsComponent implements OnInit {
   reservation!: TReservations;
   guest!: TGuests;
@@ -29,6 +32,9 @@ export class ReservationDetailsComponent implements OnInit {
     this.loadReservation(this.idParam);
   }
 
+  // Método loadReservation
+  // Carrega os detalhes da reserva com base no ID fornecido
+  // Após carregar a reserva, chama o método loadGuest para carregar os detalhes do hóspede associado
   loadReservation(id: string): void {
     this.reservationService.getReservationById(id).subscribe({
       next: (reservation) => {
@@ -39,11 +45,12 @@ export class ReservationDetailsComponent implements OnInit {
     });
   }
 
+  // Método loadGuest
+  // Carrega os detalhes do hóspede com base no ID fornecido
   loadGuest(id: string): void {
     this.guestService.getGuestById(id).subscribe({
       next: (guest) => {
         this.guest = guest;
-        console.log(this.guest);
       },
       error: (err) => console.error(err),
     });

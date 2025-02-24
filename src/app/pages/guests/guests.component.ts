@@ -8,6 +8,7 @@ import { CommomButtonComponent } from '../../components/commom-button/commom-but
 import { ReservationsService } from '../../services/reservations.service';
 import { TReservations } from '../../@types/reservations';
 import { CommonModule } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-guests',
@@ -21,6 +22,18 @@ import { CommonModule } from '@angular/common';
   templateUrl: './guests.component.html',
   styleUrl: './guests.component.scss',
 })
+
+// Componente GuestsComponent
+// Listagem e gerenciamento de hóspedes em uma tabela
+// Responsável por carregar a lista de hóspedes e suas reservas, além de permitir a exclusão de hóspedes
+// Método loadGuests carrega a lista de hóspedes e define o primeiro hóspede como selecionado por padrão
+// Método loadGuestInformations carrega as informações de um hóspede específico ao selecioná-lo
+// Método getReservations obtém a lista de reservas para validação de hóspedes com reservas ativas
+// Método validationGustHasReservation verifica se um hóspede possui reserva ativa
+// Método removeGuest remove um hóspede, desde que ele não tenha reservas ativas
+// Método openModal abre o modal de exclusão ou edição de hóspedes
+// Método toggleModal controla a abertura e fechamento dos modais
+// Método viewAlert exibe um alerta temporário após ações como exclusão ou edição de hóspedes
 export class GuestsComponent implements OnInit {
   guests: Array<TGuests> = [];
   reservation!: TReservations;
@@ -40,6 +53,8 @@ export class GuestsComponent implements OnInit {
     this.getReservations();
   }
 
+  // Método loadGuests
+  // Carrega a lista de hóspedes do serviço e define o primeiro hóspede como selecionado por padrão
   loadGuests(): void {
     this.guestService.getGuests().subscribe({
       next: (guests) => {
@@ -52,6 +67,8 @@ export class GuestsComponent implements OnInit {
     });
   }
 
+  // Método loadGuestInformations
+  // Carrega as informações de um hóspede específico ao selecioná-lo
   loadGuestInformations(id: string): void {
     this.guestService.getGuestById(id).subscribe({
       next: (guest) => {
@@ -61,15 +78,19 @@ export class GuestsComponent implements OnInit {
     });
   }
 
+  // Método getReservations
+  // Obtém a lista de reservas para validação de hóspedes com reservas ativas
   getReservations(): void {
     this.reservationService.getReservations().subscribe({
       next: (reserv) => {
         this.reservations = reserv;
-        console.log('EIS AQUI AS RESERVA:', this.reservations);
+        console.log('EIS AQUI AS RESERVAS:', this.reservations);
       },
     });
   }
 
+  // Método validationGustHasReservation
+  // Verifica se um hóspede possui reserva ativa
   validationGustHasReservation(id: string): boolean {
     this.reservations.forEach((element) => {
       if (element.guestId == id) {
@@ -83,6 +104,8 @@ export class GuestsComponent implements OnInit {
     return true;
   }
 
+  // Método removeGuest
+  // Remove um hóspede, desde que ele não tenha reservas ativas
   removeGuest(id: string): void {
     if (this.guestIdHasReservation != id) {
       this.guestHasReservation = false;
@@ -96,6 +119,8 @@ export class GuestsComponent implements OnInit {
     }
   }
 
+  // Método openModal
+  // Abre o modal de exclusão ou edição de hóspedes
   openModal(id: string, modalId: string) {
     if (modalId == 'modalDeleteGuest') {
       this.validationGustHasReservation(id);
@@ -104,6 +129,8 @@ export class GuestsComponent implements OnInit {
     this.toggleModal(modalId, true);
   }
 
+  // Método toggleModal
+  // Controla a abertura e fechamento dos modais
   toggleModal(modalId: string, isOpen: boolean): void {
     const modal = document.getElementById(modalId) as HTMLDialogElement;
     if (modal) {
@@ -111,6 +138,8 @@ export class GuestsComponent implements OnInit {
     }
   }
 
+  // Método viewAlert
+  // Exibe um alerta temporário após ações como exclusão ou edição de hóspedes
   viewAlert(value: boolean): void {
     const intervalId = setInterval(() => {
       this.viewOrNo = value;

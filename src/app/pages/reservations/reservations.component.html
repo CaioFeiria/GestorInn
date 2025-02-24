@@ -9,27 +9,28 @@
           </svg>
         </div>
         <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-          <li><a (click)="orderByRoom(); handleClick()">Tipo de quarto</a></li>
-          <li><a (click)="orderByStatus(); handleClick()">Status</a></li>
-          <li><a (click)="orderByCheckIn(); handleClick()">Data checkIn</a></li>
-          <li><a (click)="orderByCheckOut(); handleClick()">Data checkOut</a></li>
+          <li (click)="orderByRoom(); handleClick()"><a>Tipo de Quarto</a></li>
+          <li (click)="orderByStatus(); handleClick()"><a>Status</a></li>
+          <li (click)="orderByCheckIn(); handleClick()"><a>Data CheckIn</a></li>
+          <li (click)="orderByCheckOut(); handleClick()"><a>Data CheckOut</a></li>
         </ul>
       </div>
 
       <h3 class="font-bold text-2xl pr-4 text-start">Reservas</h3>
+
     </div>
     <app-search></app-search>
     <a (click)="toggleModal('modalInsert' ,true)" class="btn btn-accent w-40 m-2">Nova Reserva</a >
   </div>
 
-  <table class="table bg-base-100 max-w-295">
+  <table class="table bg-base-100 max-w-295 mb-20">
     <thead [ngClass]="reservations.length == 0 ? 'hidden': ''">
       <tr>
-        <th *ngIf="" >Status</th>
+        <th><div id="thStatus" class="flex items-center justify-start gap-2">Status</div></th>
         <th>Hóspede Responsável</th>
-        <th>Tipo de Quarto</th>
-        <th>CheckIn</th>
-        <th>CheckOut</th>
+        <th><div id="thRoom" class="flex items-center justify-start gap-2">Tipo de Quarto</div></th>
+        <th><div id="thCheckIn" class="flex items-center justify-start gap-2">CheckIn</div></th>
+        <th><div id="thCheckOut" class="flex items-center justify-start gap-2">CheckOut</div></th>
         <th>Total de Hóspedes</th>
         <th>Observações</th>
         <th>Ações</th>
@@ -159,6 +160,18 @@
   }
     </tbody>
   </table>
+
+  <app-alert
+  [hidden]="viewOrNo"
+  message="A Reserva foi alterado com sucesso!"
+  class="absolute top-17 -right-135 w-250 transform -translate-x-1/2 mt-4 p-2 rounded-lg m-0"
+/>
+
+<!-- <app-alert
+  [hidden]="viewOrNo"
+  message="O(a) Hóspede foi cadastrado com sucesso!"
+  class="absolute top-0 left-1/2 w-full transform -translate-x-1/2 mt-4 p-2 rounded-lg m-0"
+/> -->
 </div>
 
 <app-modal

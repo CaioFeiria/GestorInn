@@ -11,8 +11,13 @@ import { RoomsService } from '../../services/rooms.service';
 import { RouterLink } from '@angular/router';
 import { SearchComponent } from '../../components/search/search.component';
 import { SearchService } from '../../services/search.service';
-import { Status } from '../../enums/status.enum';
-import { RoomType } from '../../enums/roomType.enum';
+import { TOrderState } from '../../@types/orderState';
+import { SortingService } from '../../services/sorting.service';
+import { CheckInSorting } from '../../strategies/check-in-sorting.strategy';
+import { StatusSorting } from '../../strategies/status-sorting.strategy';
+import { RoomSorting } from '../../strategies/room-sorting.strategy';
+import { CheckOutSorting } from '../../strategies/check-out-sorting.strategy';
+import { AlertComponent } from '../../components/alert/alert.component';
 
 @Component({
   selector: 'app-reservations',
@@ -24,10 +29,16 @@ import { RoomType } from '../../enums/roomType.enum';
     FormReservationComponent,
     RouterLink,
     SearchComponent,
+    AlertComponent,
   ],
   templateUrl: './reservations.component.html',
   styleUrl: './reservations.component.scss',
 })
+
+// Componente ReservationsComponent
+// Listagem e gerenciamento de reservas
+// Responsável por carregar, filtrar, ordenar e exibir reservas, além de permitir a exclusão de reservas
+// Utiliza serviços para buscar dados de reservas, hóspedes e quartos, além de implementar funcionalidades de busca e ordenação
 export class ReservationsComponent implements OnInit {
   reservations: Array<TReservations> = [];
   reservationsBackup: Array<TReservations> = [];
@@ -36,12 +47,14 @@ export class ReservationsComponent implements OnInit {
   reservationId: string = '';
   viewOrNo: boolean = false;
   optionSearch: string = '';
+  orderState: { [key: string]: TOrderState } = {};
 
   constructor(
     private reservationService: ReservationsService,
     private guestService: GuestsService,
     private roomService: RoomsService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private sortingService: SortingService
   ) {}
 
   ngOnInit(): void {
@@ -51,6 +64,8 @@ export class ReservationsComponent implements OnInit {
     this.inputSearch();
   }
 
+  // Método loadOptionSearch
+  // Carrega a opção de busca selecionada a partir do serviço SearchService
   loadOptionSearch(): void {
     this.searchService.searchedOption$.subscribe({
       next: (value) => {
@@ -59,6 +74,8 @@ export class ReservationsComponent implements OnInit {
     });
   }
 
+  // Método inputSearch
+  // Configura a busca em tempo real, filtrando a lista de reservas conforme o valor digitado
   inputSearch(): void {
     this.searchService.searched$.subscribe({
       next: (value) => {
@@ -67,6 +84,8 @@ export class ReservationsComponent implements OnInit {
     });
   }
 
+  // Método filter
+  // Filtra a lista de reservas com base no valor de busca e na opção de busca selecionada
   filter(search: string): void {
     switch (this.optionSearch) {
       case 'checkIn':
@@ -100,6 +119,8 @@ export class ReservationsComponent implements OnInit {
     }
   }
 
+  // Método loadReservations
+  // Carrega a lista de reservas do serviço e carrega a lista de hóspedes
   loadReservations(): void {
     this.reservationService.getReservations().subscribe({
       next: (reservations) => {
@@ -111,6 +132,8 @@ export class ReservationsComponent implements OnInit {
     });
   }
 
+  // Método getInformationsReservation
+  // Carrega os detalhes de uma reserva específica com base no ID fornecido
   getInformationsReservation(id: string): void {
     this.reservationService.getReservationById(id).subscribe({
       next: (reservation) => {
@@ -120,6 +143,8 @@ export class ReservationsComponent implements OnInit {
     });
   }
 
+  // Método getGuests
+  // Carrega a lista de hóspedes do serviço GuestsService
   getGuests(): void {
     this.guestService.getGuests().subscribe({
       next: (guest) => {
@@ -129,6 +154,8 @@ export class ReservationsComponent implements OnInit {
     });
   }
 
+  // Método removeReservation
+  // Remove uma reserva com base no ID fornecido e recarrega a lista de reservas
   removeReservation(id: string): void {
     this.reservationService.deleteReservation(id).subscribe({
       next: () => {
@@ -138,11 +165,15 @@ export class ReservationsComponent implements OnInit {
     });
   }
 
+  // Método openModal
+  // Abre o modal de edição ou exclusão de reservas com base no ID fornecido
   openModal(id: string, modalId: string) {
     this.reservationId = id;
     this.toggleModal(modalId, true);
   }
 
+  // Método toggleModal
+  // Controla a abertura e fechamento dos modais
   toggleModal(modalId: string, isOpen: boolean): void {
     const modal = document.getElementById(modalId) as HTMLDialogElement;
     if (modal) {
@@ -150,62 +181,95 @@ export class ReservationsComponent implements OnInit {
     }
   }
 
+  // Método orderByCheckIn
+  // Ordena a lista de reservas por data de check-in
   orderByCheckIn(): void {
-    for (let i = 0; i < this.reservations.length; i++) {
-      for (let j = i + 1; j < this.reservations.length; j++) {
-        if (
-          new Date(this.reservations[i].checkIn) >
-          new Date(this.reservations[j].checkIn)
-        ) {
-          let temp = this.reservations[i];
-          this.reservations[i] = this.reservations[j];
-          this.reservations[j] = temp;
-        }
-      }
-    }
+    this.toggleOrder('thCheckIn');
+    this.sortingService.setStrategy(new CheckInSorting());
+    this.reservations = this.sortingService.sort(
+      this.reservations,
+      this.orderState['thCheckIn']
+    );
+    this.updateTableHeader('thCheckIn');
   }
 
+  // Método orderByCheckOut
+  // Ordena a lista de reservas por data de check-out
   orderByCheckOut(): void {
-    for (let i = 0; i < this.reservations.length; i++) {
-      for (let j = i + 1; j < this.reservations.length; j++) {
-        if (
-          new Date(this.reservations[i].checkOut) >
-          new Date(this.reservations[j].checkOut)
-        ) {
-          let temp = this.reservations[i];
-          this.reservations[i] = this.reservations[j];
-          this.reservations[j] = temp;
-        }
-      }
+    this.toggleOrder('thCheckOut');
+    this.sortingService.setStrategy(new CheckOutSorting());
+    this.reservations = this.sortingService.sort(
+      this.reservations,
+      this.orderState['thCheckOut']
+    );
+    this.updateTableHeader('thCheckOut');
+  }
+
+  // Método orderByStatus
+  // Ordena a lista de reservas por status
+  orderByStatus(): void {
+    this.toggleOrder('thStatus');
+    this.sortingService.setStrategy(new StatusSorting());
+    this.reservations = this.sortingService.sort(
+      this.reservations,
+      this.orderState['thStatus']
+    );
+    this.updateTableHeader('thStatus');
+  }
+
+  // Método orderByRoom
+  // Ordena a lista de reservas por tipo de quarto
+  orderByRoom(): void {
+    this.toggleOrder('thRoom');
+    this.sortingService.setStrategy(new RoomSorting());
+    this.reservations = this.sortingService.sort(
+      this.reservations,
+      this.orderState['thRoom']
+    );
+    this.updateTableHeader('thRoom');
+  }
+
+  // Método toggleOrder
+  // Alterna o estado de ordenação (ascendente, descendente ou nenhum) a cada chamada que a função ordenar fazer
+  toggleOrder(columnId: string): void {
+    console.log('aqui o order:', this.orderState);
+    if (!this.orderState[columnId]) {
+      this.orderState[columnId] = 'asc';
+    } else if (this.orderState[columnId] === 'asc') {
+      this.orderState[columnId] = 'desc';
+    } else {
+      this.orderState[columnId] = null;
     }
   }
 
-  orderByStatus(): void {
-    const statusOrder: Record<string, number> = {
-      [Status.Confirmed]: 1,
-      [Status.Pending]: 2,
-      [Status.Cancelled]: 3,
-    };
+  // Método updateTableHeader
+  // Atualiza o ícone de ordenação na tabela conforme o estado de ordenação atual
+  updateTableHeader(columnId: string): void {
+    document.querySelectorAll('.sort-icon').forEach((icon) => icon.remove());
 
-    this.orderByCheckIn();
-    this.reservations.sort(
-      (a, b) => statusOrder[a.status] - statusOrder[b.status]
-    );
+    const columnDiv = document.getElementById(columnId);
+    if (!columnDiv) return;
+
+    const order = this.orderState[columnId];
+
+    if (order) {
+      const icon = document.createElement('span');
+      icon.classList.add('sort-icon');
+      icon.innerHTML =
+        order === 'asc'
+          ? `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-4 w-4 text-primary">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+      </svg>`
+          : `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-4 w-4 text-primary">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5 7.5 21m0 0L12 16.5M7.5 21V7.5m13.5 0L16.5 3m0 0L12 7.5m4.5-4.5V16.5" />
+      </svg>`;
+
+      columnDiv.appendChild(icon);
+    }
   }
 
-  orderByRoom(): void {
-    const roomsOrder: Record<string, number> = {
-      [RoomType.Suite]: 3,
-      [RoomType.Deluxe]: 2,
-      [RoomType.Standard]: 1,
-    };
-
-    this.orderByCheckIn();
-    this.reservations.sort(
-      (a, b) => roomsOrder[a.roomType] - roomsOrder[b.roomType]
-    );
-  }
-
+  // Método handleClick
+  // Utilizado para fechar dropdown após o usuario selecionar a opção
   handleClick(): void {
     const elem = document.activeElement as HTMLElement;
     if (elem) {
@@ -213,6 +277,8 @@ export class ReservationsComponent implements OnInit {
     }
   }
 
+  // Método viewAlert
+  // Exibe um alerta temporário após ações como exclusão ou edição de reservas
   viewAlert(value: boolean): void {
     const intervalId = setInterval(() => {
       this.viewOrNo = value;

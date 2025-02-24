@@ -1,3 +1,5 @@
+// Tipo Reservations para criação de uma reserva no banco
+
 export type TReservations = {
   id: string;
   guestId: string;
